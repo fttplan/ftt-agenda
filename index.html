@@ -945,20 +945,31 @@ const showToast=(m,t='')=>{const el=document.getElementById('toast');el.textCont
 const showConflict=()=>{const b=document.getElementById('cflct');b.classList.add('on');setTimeout(()=>b.classList.remove('on'),2500);};
 
 // ===== INIT =====
-window.onload=function(){
+// Démarrage immédiat — plusieurs méthodes pour garantir l'exécution
+function _boot(){
   cfg={demo:true};
+  // Logo
   try{var imgs=document.querySelectorAll('img[alt="FTT"]');for(var i=0;i<imgs.length;i++)imgs[i].src=LOGO;}catch(e){}
-  setTimeout(function(){
-    try{document.getElementById('splash').style.display='none';}catch(e){}
-    try{startApp();}catch(e){try{loadDemo();renderAll();}catch(e2){}}
-    setTimeout(function(){
-      try{
-        document.getElementById('loginLogo').src=LOGO;
-        document.getElementById('loginScreen').style.display='flex';
-      }catch(e){}
-    },400);
-  },1000);
-};
+  // Masquer splash
+  try{document.getElementById('splash').style.cssText='display:none!important';}catch(e){}
+  // Lancer app
+  try{startApp();}catch(e){try{loadDemo();renderAll();}catch(e2){}}
+  // Afficher login
+  try{
+    document.getElementById('loginLogo').src=LOGO;
+    document.getElementById('loginScreen').style.display='flex';
+  }catch(e){}
+}
+
+// Méthode 1: DOMContentLoaded
+document.addEventListener('DOMContentLoaded',function(){setTimeout(_boot,500);});
+// Méthode 2: window.onload (fallback)
+window.onload=function(){setTimeout(_boot,500);};
+// Méthode 3: setTimeout immédiat (dernier recours)
+setTimeout(function(){
+  var sp=document.getElementById('splash');
+  if(sp&&sp.style.display!=='none'){_boot();}
+},3000);
 function saveConfig(){const id=document.getElementById('setupId').value.trim(),key=document.getElementById('setupKey').value.trim();if(!id||!key){showToast('Remplissez tous les champs','err');return;}cfg={sheetId:id,apiKey:key};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
 function startDemo(){cfg={demo:true};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
 function startApp(){
