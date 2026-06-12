@@ -333,7 +333,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
   <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:24px;">VERSION 1.1</div>
   <div style="background:white;border-radius:20px;padding:24px;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(0,0,0,0.3);">
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#0D47A1;margin-bottom:16px;text-align:center;letter-spacing:1px;">CONNEXION</div>
-    <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Entrez votre code PIN" onkeydown="if(event.keyCode===13)doLoginPin()" style="width:100%;padding:13px;border:2px solid #1565C0;border-radius:10px;font-size:20px;text-align:center;letter-spacing:8px;box-sizing:border-box;margin-bottom:10px;">
+    <input type="password" id="loginPin" inputmode="numeric" maxlength="5" placeholder="Entrez votre code PIN" onkeydown="if(event.keyCode===13)doLoginPin()" style="width:100%;padding:13px;border:2px solid #1565C0;border-radius:10px;font-size:20px;text-align:center;letter-spacing:8px;box-sizing:border-box;margin-bottom:10px;">
     <button onclick="doLoginPin()" style="width:100%;background:linear-gradient(135deg,#0D47A1,#1565C0);border:none;color:white;padding:14px;border-radius:10px;font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;letter-spacing:1px;margin-bottom:14px;">SE CONNECTER</button>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
       <div style="flex:1;height:1px;background:#E0E0E0;"></div>
@@ -858,14 +858,14 @@ var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
 var ADMIN_NOM='Oussama Kassis';
-var ADMIN_PIN='7575';
+var ADMIN_PIN='75750';
 var ACCES_COACHS=[
-  {nom:'Moez Hachaichi',pin:'6262'},{nom:'Fares Zaier',pin:'3737'},
-  {nom:'Ahmed Noamen',pin:'6363'},{nom:'Omar laabidi',pin:'6565'},
-  {nom:'Seif Ben Slimene',pin:'7474'},{nom:'Ameur ben hassan',pin:'6868'},
-  {nom:'Achraf Omrane',pin:'6767'},{nom:'Oussama Kassis',pin:'7575'},
-  {nom:'Nadia Charfi',pin:'6464'},{nom:'Ines Zribi',pin:'6969'},
-  {nom:'Sami Trabelsi',pin:'7171'},{nom:'Ahmed Ben Ali',pin:'6161'}
+  {nom:'Moez Hachaichi',pin:'62620'},{nom:'Fares Zaier',pin:'37370'},
+  {nom:'Ahmed Noamen',pin:'63630'},{nom:'Omar laabidi',pin:'65650'},
+  {nom:'Seif Ben Slimene',pin:'74740'},{nom:'Ameur ben hassan',pin:'68680'},
+  {nom:'Achraf Omrane',pin:'67670'},{nom:'Oussama Kassis',pin:'75750'},
+  {nom:'Nadia Charfi',pin:'64640'},{nom:'Ines Zribi',pin:'69690'},
+  {nom:'Sami Trabelsi',pin:'71710'},{nom:'Ahmed Ben Ali',pin:'61610'}
 ];
 var currentCoach=null,currentRole=null;
 // === Polyfill pour Safari iOS < 14 ===
@@ -928,6 +928,23 @@ var showConflict=()=>{var b=document.getElementById('cflct');b.classList.add('on
 
 // ===== INIT =====
 function _boot(){
+  // RESET UNIQUE v1.1-vierge : vider les anciennes données une seule fois
+  try{
+    if(localStorage.getItem('fttResetV11')!=='done'){
+      localStorage.removeItem('fttData');
+      localStorage.setItem('fttResetV11','done');
+      // Vider aussi JSONBin
+      D.planning=[];D.joueurs=[];D.coachs=[];D.absences=[];D.competitions=[];
+      D.notes={};D.msg={};D.historique=[];D.updatedAt=Date.now();
+      try{
+        fetch(JSONBIN_URL,{method:'PUT',
+          headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},
+          body:JSON.stringify({planning:[],joueurs:[],coachs:[],absences:[],competitions:[],notes:{},msg:{},historique:[],acces:{coachs:ACCES_COACHS},updatedAt:Date.now()})
+        });
+      }catch(e){}
+    }
+  }catch(e){}
+
   if(window._booted)return;window._booted=true;
   cfg={demo:true};
   try{var im=document.querySelectorAll('img[alt="FTT"]');for(var i=0;i<im.length;i++)im[i].src=LOGO;}catch(e){}
@@ -961,49 +978,19 @@ function initAutoSync(){
 }
 
 function loadDemo(){
-  var t=fd(new Date());
-  D.courts=['Court 1','Court 2','Court 3','Court 4','Court Couvert'];
-  D.coachs=[
-    {id:1,nom:'Ahmed Ben Ali',mission:'Coach U16',notes:''},
-    {id:2,nom:'Sami Trabelsi',mission:'Coach U14',notes:''},
-    {id:3,nom:'Leila Mansour',mission:'Préparateur physique',notes:'Bilan mi-saison'},
-    {id:4,nom:'Karim Jebali',mission:'Coach U12',notes:''},
-    {id:5,nom:'Nadia Charfi',mission:'Coach U12',notes:''},
-    {id:6,nom:'Youssef Ghrabi',mission:'Coordinateur',notes:'Tournoi international'},
-    {id:7,nom:'Ines Zribi',mission:'Coach Pro',notes:''},
-    {id:8,nom:'Tarek Hamdi',mission:'Directeur technique',notes:'14h salle conférence'},
-  ];
-  D.joueurs=[
-    {id:1,nom:'Mariam Saidi',cat:'U14 Filles',ddn:'',club:'',contact:''},
-    {id:2,nom:'Fatma Dridi',cat:'U14 Filles',ddn:'',club:'',contact:''},
-    {id:3,nom:'Rania Ghodhbane',cat:'U14 Filles',ddn:'',club:'',contact:''},
-    {id:4,nom:'Sarra Khelil',cat:'U14 Filles',ddn:'',club:'',contact:''},
-    {id:5,nom:'Yassine Ben Fredj',cat:'U14 Garçons',ddn:'',club:'',contact:''},
-    {id:6,nom:'Omar Touati',cat:'U14 Garçons',ddn:'',club:'',contact:''},
-    {id:7,nom:'Aziz Chebbi',cat:'U14 Garçons',ddn:'',club:'',contact:''},
-    {id:8,nom:'Nesrine Hamdi',cat:'U16 Filles',ddn:'',club:'',contact:''},
-    {id:9,nom:'Dorra Belhaj',cat:'U16 Filles',ddn:'',club:'',contact:''},
-    {id:10,nom:'Amira Zghal',cat:'U16 Filles',ddn:'',club:'',contact:''},
-    {id:11,nom:'Mehdi Slama',cat:'U16 Garçons',ddn:'',club:'',contact:''},
-    {id:12,nom:'Bilel Arfaoui',cat:'U16 Garçons',ddn:'',club:'',contact:''},
-    {id:13,nom:'Hatem Rekik',cat:'U16 Garçons',ddn:'',club:'',contact:''},
-    {id:14,nom:'Fares Jouini',cat:'U18',ddn:'',club:'',contact:''},
-    {id:15,nom:'Lina Bouzid',cat:'U18',ddn:'',club:'',contact:''},
-    {id:16,nom:'Khalil Mbarki',cat:'Pro',ddn:'',club:'',contact:''},
-  ];
-  D.planning=[
-    {id:1,date:t,hd:'09:00',dur:90,court:'Court 1',surf:'Terre battue',type:'Tennis',coachs:['Ahmed Ben Ali'],joueurs:['Mehdi Slama','Bilel Arfaoui','Hatem Rekik'],notes:'Travail tactique revers'},
-    {id:2,date:t,hd:'09:00',dur:60,court:'Court 2',surf:'Terre battue',type:'Tennis',coachs:['Sami Trabelsi'],joueurs:['Yassine Ben Fredj','Omar Touati','Aziz Chebbi'],notes:'Échanges fond de court'},
-    {id:3,date:t,hd:'10:30',dur:90,court:'Salle de musculation',surf:'',type:'Physique',coachs:['Ahmed Ben Ali','Nadia Charfi'],joueurs:['Nesrine Hamdi','Dorra Belhaj','Mehdi Slama'],notes:'Musculation + cardio'},
-    {id:4,date:t,hd:'14:00',dur:120,court:'Court 3',surf:'Terre battue',type:'Tennis',coachs:['Ines Zribi'],joueurs:['Khalil Mbarki','Fares Jouini'],notes:'Préparation match'},
-    {id:5,date:t,hd:'15:00',dur:60,court:'Terrain',surf:'',type:'Physique',coachs:['Nadia Charfi'],joueurs:['Mariam Saidi','Fatma Dridi','Rania Ghodhbane'],notes:'Cardio terrain'},
-  ];
-  D.absences=[{id:1,date:t,joueur:'Omar Touati',seanceId:2,stat:'Médical',notes:'Blessure genou'}];
-  D.competitions=[{id:1,nom:'Open de Tunis U16',debut:'2026-06-15',fin:'2026-06-18',lieu:'Club Tennis Tunis',surf:'Terre battue',joueurs:['Mehdi Slama','Bilel Arfaoui'],coachs:['Ahmed Ben Ali'],notes:'Tenue FTT obligatoire'}];
-  D.msg[t]='Réunion d\'équipe à 13h — Salle conférence. Présence obligatoire.';
+  // Application vierge — aucune donnée de démonstration
+  D.planning=[];
+  D.joueurs=[];
+  D.coachs=[];
+  D.absences=[];
+  D.competitions=[];
+  D.courts=['Court 1','Court 2','Court 3','Court 4','Court 5','Court 6'];
+  D.notes={};
+  D.msg={};
+  D.historique=[];
+  D.updatedAt=0;
 }
 
-// ===== RENDER ALL =====
 function renderAll(){
   try{renderMsg();}catch(e){}
   try{renderTL();}catch(e){}
@@ -3240,7 +3227,7 @@ function renderAdminPanel(){
     var c=ACCES_COACHS[i];
     h+='<div style="display:flex;gap:5px;margin-bottom:6px;">'
      +'<input id="cn_'+i+'" value="'+c.nom+'" style="flex:2;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:13px;">'
-     +'<input id="cp_'+i+'" value="'+c.pin+'" maxlength="4" inputmode="numeric" placeholder="PIN" style="flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:13px;text-align:center;">'
+     +'<input id="cp_'+i+'" value="'+c.pin+'" maxlength="5" inputmode="numeric" placeholder="PIN" style="flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:13px;text-align:center;">'
      +'<button onclick="rmCoach('+i+')" style="background:#E53935;border:none;color:white;width:32px;border-radius:8px;cursor:pointer;font-size:14px;touch-action:manipulation;">X</button>'
      +'</div>';
   }
@@ -3255,7 +3242,7 @@ function saveAdmin(){
   try{saveToLocal();}catch(e){}
   closeMo('adminMo');
 }
-function addCoach(){ACCES_COACHS.push({nom:'Nouveau coach',pin:'0000'});renderAdminPanel();}
+function addCoach(){ACCES_COACHS.push({nom:'Nouveau coach',pin:'00000'});renderAdminPanel();}
 function rmCoach(i){ACCES_COACHS.splice(i,1);renderAdminPanel();}
 function addHistorique(a,d){if(!D.historique)D.historique=[];D.historique.unshift({ts:Date.now(),date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),action:a,detail:d||''});if(D.historique.length>50)D.historique=D.historique.slice(0,50);}
 
@@ -3273,6 +3260,24 @@ var _refreshTimer=setInterval(function(){
   }).catch(function(){});
 },60000);
 ;
+
+async function syncNow(){
+  try{
+    var b=document.getElementById('syncBtn');if(b)b.classList.add('spin');
+    var r=document.getElementById('syncRing');if(r)r.classList.add('on');
+    setStatus('loading','Sync...');
+    D.updatedAt=Date.now();
+    await saveToJsonBin();
+    await loadFromJsonBin();
+    try{saveToLocal();}catch(e){}
+    try{renderAll();}catch(e){}
+    setStatus('ok','Synchronisé — '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
+    showToast('Synchronisé ✓','ok');
+  }catch(e){setStatus('ok','Mode local');}
+  try{var b=document.getElementById('syncBtn');if(b)b.classList.remove('spin');}catch(e){}
+  try{var r=document.getElementById('syncRing');if(r)r.classList.remove('on');}catch(e){}
+  syncCountdown=120;
+}
 </script>
 
 <!-- Hidden filter elements (kept for JS compatibility) -->
