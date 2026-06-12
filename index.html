@@ -328,14 +328,14 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
 
 <!-- SPLASH -->
 <div id="loginScreen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0D47A1,#1565C0 60%,#E53935);z-index:10000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
-  <img id="loginLogo" alt="FTT" style="width:80px;height:80px;object-fit:contain;background:white;border-radius:20px;padding:8px;margin-bottom:14px;">
+  <img id="loginLogo" alt="FTT" style="width:80px;height:80px;object-fit:contain;background:white;border-radius:20px;padding:8px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,0.3);">
   <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:white;letter-spacing:3px;margin-bottom:2px;">FTT AGENDA</div>
   <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:20px;">VERSION 1.1</div>
-  <div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;">
-    <div style="font-size:12px;color:#999;margin-bottom:8px;text-align:center;font-weight:600;">SÉLECTIONNEZ VOTRE NOM</div>
-    <select id="loginSelect" onchange="onLoginSelect()" style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:15px;color:#0D47A1;background:white;margin-bottom:10px;box-sizing:border-box;">
+  <div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(0,0,0,0.3);">
+    <div style="font-size:12px;color:#999;margin-bottom:10px;text-align:center;font-weight:600;letter-spacing:0.5px;">QUI ÊTES-VOUS ?</div>
+    <select id="loginSelect" style="width:100%;padding:12px;border:2px solid #1565C0;border-radius:10px;font-size:15px;color:#0D47A1;background:white;margin-bottom:10px;box-sizing:border-box;">
       <option value="">-- Choisir --</option>
-      <optgroup label="Coachs (avec PIN)">
+      <optgroup label="Coachs (PIN requis)">
         <option value="Moez Hachaichi">Moez Hachaichi</option>
         <option value="Fares Zaier">Fares Zaier</option>
         <option value="Ahmed Noamen">Ahmed Noamen</option>
@@ -343,23 +343,19 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
         <option value="Seif Ben Slimene">Seif Ben Slimene</option>
         <option value="Ameur ben hassan">Ameur ben hassan</option>
         <option value="Achraf Omrane">Achraf Omrane</option>
-        <option value="Oussama Kassis">Oussama Kassis</option>
+        <option value="Oussama Kassis">Oussama Kassis 👑</option>
         <option value="Nadia Charfi">Nadia Charfi</option>
         <option value="Ines Zribi">Ines Zribi</option>
         <option value="Sami Trabelsi">Sami Trabelsi</option>
         <option value="Ahmed Ben Ali">Ahmed Ben Ali</option>
       </optgroup>
-      <optgroup label="Consultation uniquement">
-        <option value="__L__Wahid Alioua">Wahid Alioua</option>
-        <option value="__L__Lecteur 2">Lecteur 2</option>
-        <option value="__L__Lecteur 3">Lecteur 3</option>
-        <option value="__L__Lecteur 4">Lecteur 4</option>
-        <option value="__L__Lecteur 5">Lecteur 5</option>
+      <optgroup label="Accès libre">
+        <option value="invite">👁 Invité (consultation)</option>
       </optgroup>
     </select>
-    <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Code PIN"
-      style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:20px;text-align:center;letter-spacing:6px;box-sizing:border-box;margin-bottom:10px;">
-    <button onclick="doLogin()" style="width:100%;background:#1565C0;border:none;color:white;padding:13px;border-radius:10px;font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">ACCÉDER →</button>
+    <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Code PIN (coachs uniquement)"
+      style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;box-sizing:border-box;margin-bottom:12px;">
+    <button onclick="doLogin()" style="width:100%;background:linear-gradient(135deg,#0D47A1,#1565C0);border:none;color:white;padding:13px;border-radius:10px;font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;letter-spacing:1px;">ACCÉDER →</button>
   </div>
 </div>
 <div id="splash">
@@ -647,9 +643,16 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
 
 <div class="mo" id="adminMo" onclick="closeOut(event,'adminMo')">
   <div class="modal"><div class="mhandle"></div>
-    <div class="mhdr"><div class="mtitle">👑 ADMINISTRATION</div><button class="mclose" onclick="closeMo('adminMo')">✕</button></div>
-    <div class="mbody"><div id="adminContent"></div>
-      <div class="brow"><button class="btn-s" onclick="closeMo('adminMo')">Annuler</button><button class="btn-p" onclick="saveAdmin()">💾 Enregistrer</button></div>
+    <div class="mhdr" style="background:linear-gradient(135deg,#0D47A1,#1565C0);">
+      <div class="mtitle" style="color:white;font-size:16px;">👑 GESTION DES ACCÈS</div>
+      <button class="mclose" style="color:white;background:rgba(255,255,255,0.2);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;" onclick="closeMo('adminMo')">✕</button>
+    </div>
+    <div class="mbody">
+      <div id="adminContent"></div>
+      <div class="brow">
+        <button class="btn-s" onclick="closeMo('adminMo')">Annuler</button>
+        <button class="btn-p" onclick="saveAdmin()">💾 Enregistrer</button>
+      </div>
     </div>
   </div>
 </div>
@@ -863,14 +866,16 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
   </div>
 </div>
 
-<script>// ===== JSONBIN =====
+<script>// ===== CONFIG =====
 var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
-
-// ===== ACCÈS =====
+var SCRIPT_URL='https://script.google.com/macros/s/AKfycbzS_F-JaOVEdgBURZIQgyVWaCQO7G_L9ipYNPNH0wiIdudkh_pgq0RpubpXkqlOcAEP8g/exec';
 var ADMIN_NOM='Oussama Kassis';
-var ACCES_EDITEURS=[
+var ADMIN_PIN='7575';
+
+// Accès par défaut (mis à jour depuis JSONBin)
+var ACCES_COACHS=[
   {nom:'Moez Hachaichi',   pin:'6262'},
   {nom:'Fares Zaier',      pin:'3737'},
   {nom:'Ahmed Noamen',     pin:'6363'},
@@ -884,15 +889,9 @@ var ACCES_EDITEURS=[
   {nom:'Sami Trabelsi',    pin:'7171'},
   {nom:'Ahmed Ben Ali',    pin:'6161'}
 ];
-var ACCES_LECTEURS=[
-  {nom:'Wahid Alioua'},
-  {nom:'Lecteur 2'},
-  {nom:'Lecteur 3'},
-  {nom:'Lecteur 4'},
-  {nom:'Lecteur 5'}
-];
+
 var currentCoach=null;
-var currentRole=null;
+var currentRole=null; // 'admin','coach','invite'
 
 // === Polyfill pour Safari iOS < 14 ===
 function _g(id){return document.getElementById(id);}
@@ -955,14 +954,16 @@ const showConflict=()=>{const b=document.getElementById('cflct');b.classList.add
 // ===== INIT =====
 window.onload=function(){
   cfg={demo:true};
-  try{var imgs=document.querySelectorAll('img[alt="FTT"]');for(var i=0;i<imgs.length;i++){imgs[i].src=LOGO;}}catch(e){}
+  try{var imgs=document.querySelectorAll('img[alt="FTT"]');for(var i=0;i<imgs.length;i++)imgs[i].src=LOGO;}catch(e){}
   setTimeout(function(){
     try{document.getElementById('splash').style.display='none';}catch(e){}
     try{startApp();}catch(e){try{loadDemo();renderAll();}catch(e2){}}
     setTimeout(function(){
-      try{document.getElementById('loginScreen').style.display='flex';}catch(e){}
-      try{document.getElementById('loginLogo').src=LOGO;}catch(e){}
-    },300);
+      try{
+        document.getElementById('loginLogo').src=LOGO;
+        document.getElementById('loginScreen').style.display='flex';
+      }catch(e){}
+    },400);
   },1000);
 };
 function saveConfig(){const id=document.getElementById('setupId').value.trim(),key=document.getElementById('setupKey').value.trim();if(!id||!key){showToast('Remplissez tous les champs','err');return;}cfg={sheetId:id,apiKey:key};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
@@ -974,7 +975,7 @@ function startApp(){
     if(ctxId&&document.getElementById('ctxMenu')&&!document.getElementById('ctxMenu').contains(e.target))hideCtx();
   });
   var saved=false;try{saved=loadFromLocal();}catch(e){}
-  if(!saved){loadDemo();}
+  if(!saved)loadDemo();
   try{renderAll();}catch(e){}
   try{initStats();}catch(e){}
   try{initAutoSync();}catch(e){}
@@ -982,13 +983,12 @@ function startApp(){
   loadFromJsonBin().then(function(){
     try{saveToLocal();}catch(e){}
     try{renderAll();}catch(e){}
-    setStatus('ok','Synchronisé');
+    setStatus('ok','Synchronisé — '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
   }).catch(function(){setStatus('ok','Prêt');});
 }
 
 function initAutoSync(){
-  var el=document.getElementById('syncCountdown');
-  if(el)el.textContent='';
+  try{document.getElementById('syncCountdown').textContent='';}catch(e){}
 }
 
 function loadDemo(){
@@ -1053,6 +1053,7 @@ function toggleMode(){if(!em)document.getElementById('confirmOv').classList.add(
 function closeConfirm(){document.getElementById('confirmOv').classList.remove('open');}
 function confirmEdit(){closeConfirm();setEM(true);}
 function setEM(v){
+  if(v&&currentRole!=="admin"&&currentRole!=="coach"){showToast("Accès refusé","err");return;}
   em=v;
   document.getElementById('modeBtn').classList.toggle('edit',v);
   document.getElementById('lockIc').textContent=v?'🔓':'🔒';
@@ -3078,9 +3079,8 @@ async function saveToSheets(){
 function autoSave(){
   D.updatedAt=Date.now();
   try{saveToLocal();}catch(e){}
-  saveToJsonBin().then(function(){
-    try{setStatus('ok','Sauvegardé ✓');}catch(e){}
-  }).catch(function(){});
+  saveToJsonBin().catch(function(){});
+  setStatus('ok','Sauvegardé ✓');
 }
 
 function saveToLocal(){
@@ -3128,23 +3128,26 @@ function loadFromLocal(){
 
 // ===== JSONBIN =====
 async function saveToJsonBin(){
-  var data={planning:D.planning,joueurs:D.joueurs,coachs:D.coachs,
-    absences:D.absences,competitions:D.competitions,notes:D.notes||{},
-    historique:D.historique||[],acces:{editeurs:ACCES_EDITEURS,lecteurs:ACCES_LECTEURS},
-    updatedAt:D.updatedAt};
+  var data={
+    planning:D.planning,joueurs:D.joueurs,coachs:D.coachs,
+    absences:D.absences,competitions:D.competitions,
+    notes:D.notes||{},historique:D.historique||[],
+    acces:{coachs:ACCES_COACHS},
+    updatedAt:D.updatedAt
+  };
   var res=await fetch(JSONBIN_URL,{method:'PUT',
     headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},
     body:JSON.stringify(data)});
-  if(!res.ok)throw new Error('JSONBin: '+res.status);
+  if(!res.ok)throw new Error('JSONBin '+res.status);
 }
 
 async function loadFromJsonBin(){
   var res=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}});
-  if(!res.ok)throw new Error('JSONBin: '+res.status);
+  if(!res.ok)throw new Error('JSONBin '+res.status);
   var data=(await res.json()).record;
   if(!data)return;
-  var rt=data.updatedAt||0,lt=D.updatedAt||0;
-  if(rt>=lt){
+  var rt=data.updatedAt||0;
+  if(rt>=(D.updatedAt||0)){
     if(data.planning&&data.planning.length)D.planning=data.planning;
     if(data.joueurs&&data.joueurs.length)D.joueurs=data.joueurs;
     if(data.coachs&&data.coachs.length)D.coachs=data.coachs;
@@ -3152,17 +3155,33 @@ async function loadFromJsonBin(){
     if(data.competitions)D.competitions=data.competitions;
     if(data.notes)D.notes=data.notes;
     if(data.historique)D.historique=data.historique;
-    if(data.acces){if(data.acces.editeurs)ACCES_EDITEURS=data.acces.editeurs;if(data.acces.lecteurs)ACCES_LECTEURS=data.acces.lecteurs;}
+    if(data.acces&&data.acces.coachs)ACCES_COACHS=data.acces.coachs;
     D.updatedAt=rt;
   }
 }
 
 function saveToLocal(){
-  try{localStorage.setItem('fttData',JSON.stringify({planning:D.planning,joueurs:D.joueurs,coachs:D.coachs,absences:D.absences,competitions:D.competitions,notes:D.notes||{},historique:D.historique||[],courts:D.courts||[],msg:D.msg||{},updatedAt:D.updatedAt||0}));return true;}catch(e){return false;}
+  try{localStorage.setItem('fttData',JSON.stringify({
+    planning:D.planning,joueurs:D.joueurs,coachs:D.coachs,
+    absences:D.absences,competitions:D.competitions,
+    notes:D.notes||{},historique:D.historique||[],
+    courts:D.courts||[],msg:D.msg||{},updatedAt:D.updatedAt||0
+  }));return true;}catch(e){return false;}
 }
 
 function loadFromLocal(){
-  try{var raw=localStorage.getItem('fttData');if(!raw)return false;var d=JSON.parse(raw);if(d.planning&&d.planning.length){D.planning=d.planning;D.joueurs=d.joueurs||[];D.coachs=d.coachs||[];D.absences=d.absences||[];D.competitions=d.competitions||[];D.notes=d.notes||{};D.historique=d.historique||[];D.msg=d.msg||{};D.updatedAt=d.updatedAt||0;return true;}return false;}catch(e){return false;}
+  try{
+    var raw=localStorage.getItem('fttData');
+    if(!raw)return false;
+    var d=JSON.parse(raw);
+    if(d.planning&&d.planning.length){
+      D.planning=d.planning;D.joueurs=d.joueurs||[];D.coachs=d.coachs||[];
+      D.absences=d.absences||[];D.competitions=d.competitions||[];
+      D.notes=d.notes||{};D.historique=d.historique||[];
+      D.msg=d.msg||{};D.updatedAt=d.updatedAt||0;
+      return true;
+    }return false;
+  }catch(e){return false;}
 }
 
 async function saveNow(){
@@ -3173,71 +3192,93 @@ async function saveNow(){
   try{
     await saveToJsonBin();
     if(btn){btn.textContent='✅';btn.style.background='var(--green)';btn.style.color='white';}
+    setStatus('ok','Sauvegardé ✓');
   }catch(e){
     if(btn){btn.textContent='❌';btn.style.background='var(--red)';btn.style.color='white';}
   }
-  setTimeout(function(){if(btn){btn.textContent='SAVE';btn.style.background='var(--yellow)';btn.style.color='var(--text)';btn.style.opacity='1';}},2000);
+  setTimeout(function(){
+    if(btn){btn.textContent='SAVE';btn.style.background='var(--yellow)';btn.style.color='var(--text)';btn.style.opacity='1';}
+  },2000);
 }
 
+// ===== LOGIN =====
 function doLogin(){
   var sel=document.getElementById('loginSelect');
   var nom=sel?sel.value:'';
-  if(!nom){showToast('Choisissez votre nom','err');return;}
   var pin=document.getElementById('loginPin')?document.getElementById('loginPin').value.trim():'';
 
-  if(nom.indexOf('__L__')===0){
-    currentCoach=nom.substring(5);currentRole='lecteur';em=false;
+  if(nom==='invite'){
+    currentCoach='Invité';currentRole='invite';em=false;
+  }else if(nom){
+    var coach=null;
+    for(var i=0;i<ACCES_COACHS.length;i++){if(ACCES_COACHS[i].nom===nom){coach=ACCES_COACHS[i];break;}}
+    if(!coach){showToast('Nom introuvable','err');return;}
+    if(pin!==coach.pin){
+      showToast('PIN incorrect ❌','err');
+      var pi=document.getElementById('loginPin');if(pi)pi.value='';
+      return;
+    }
+    currentCoach=nom;
+    currentRole=(nom===ADMIN_NOM&&pin===ADMIN_PIN)?'admin':'coach';
   }else{
-    var ed=null;
-    for(var i=0;i<ACCES_EDITEURS.length;i++){if(ACCES_EDITEURS[i].nom===nom){ed=ACCES_EDITEURS[i];break;}}
-    if(!ed||pin!==ed.pin){showToast('PIN incorrect','err');var pi=document.getElementById('loginPin');if(pi)pi.value='';return;}
-    currentCoach=nom;currentRole=(nom===ADMIN_NOM)?'admin':'editeur';
+    showToast('Choisissez votre nom','err');return;
   }
 
   try{document.getElementById('loginScreen').style.display='none';}catch(e){}
-  showToast('Bienvenue '+currentCoach+(currentRole==='admin'?' 👑':currentRole==='editeur'?' ✏️':' 👁'),'ok');
+  var ico=currentRole==='admin'?' 👑':currentRole==='coach'?' ✏️':' 👁';
+  showToast('Bienvenue '+currentCoach+ico,'ok');
   try{renderAll();}catch(e){}
-  try{if(currentRole==='admin'){var ab=document.getElementById('adminBtn');if(ab)ab.style.display='inline-block';}}catch(e){}
+  try{
+    var ab=document.getElementById('adminBtn');
+    if(ab)ab.style.display=(currentRole==='admin')?'inline-block':'none';
+  }catch(e){}
 }
 
-function onLoginSelect(){
-  var sel=document.getElementById('loginSelect');
-  var nom=sel?sel.value:'';
-  var isEd=nom&&nom.indexOf('__L__')!==0&&ACCES_EDITEURS.some(function(c){return c.nom===nom;});
-  var ps=document.getElementById('pinSection');
-  if(ps)ps.style.display=isEd?'block':'none';
-}
-
+// ===== ADMIN =====
 function openAdmin(){
-  if(currentRole!=='admin'){showToast('Accès réservé à l\'admin','err');return;}
+  if(currentRole!=='admin'){showToast('Accès réservé admin','err');return;}
   renderAdminPanel();openMo('adminMo');
 }
+
 function renderAdminPanel(){
   var el=document.getElementById('adminContent');if(!el)return;
-  var h='<div style="margin-bottom:12px;"><b style="color:#1565C0;">ÉDITEURS</b><br><br>';
-  ACCES_EDITEURS.forEach(function(c,i){h+='<div style="display:flex;gap:4px;margin-bottom:4px;"><input id="en_'+i+'" value="'+c.nom+'" style="flex:2;padding:6px;border:1px solid #ccc;border-radius:6px;font-size:12px;"><input id="ep_'+i+'" value="'+c.pin+'" maxlength="4" style="flex:1;padding:6px;border:1px solid #ccc;border-radius:6px;font-size:12px;text-align:center;" placeholder="PIN"><button onclick="rmEdit('+i+')" style="background:#E53935;border:none;color:white;width:26px;border-radius:6px;cursor:pointer;touch-action:manipulation;">✕</button></div>';});
-  h+='<button onclick="addEdit()" style="width:100%;background:#E3F2FD;border:2px dashed #1565C0;color:#1565C0;padding:6px;border-radius:6px;font-size:12px;cursor:pointer;touch-action:manipulation;margin-top:4px;">+ Ajouter</button></div>';
-  h+='<div><b style="color:#555;">LECTEURS</b><br><br>';
-  ACCES_LECTEURS.forEach(function(c,i){h+='<div style="display:flex;gap:4px;margin-bottom:4px;"><input id="ln_'+i+'" value="'+c.nom+'" style="flex:1;padding:6px;border:1px solid #ccc;border-radius:6px;font-size:12px;"><button onclick="rmLect('+i+')" style="background:#E53935;border:none;color:white;width:26px;border-radius:6px;cursor:pointer;touch-action:manipulation;">✕</button></div>';});
-  h+='<button onclick="addLect()" style="width:100%;background:#F5F5F5;border:2px dashed #999;color:#555;padding:6px;border-radius:6px;font-size:12px;cursor:pointer;touch-action:manipulation;margin-top:4px;">+ Ajouter</button></div>';
+  var h='<div style="font-family:Barlow Condensed,sans-serif;font-size:13px;font-weight:800;color:#1565C0;margin-bottom:10px;">COACHS — Nom et PIN</div>';
+  ACCES_COACHS.forEach(function(c,i){
+    h+='<div style="display:flex;gap:5px;margin-bottom:6px;">'
+      +'<input id="cn_'+i+'" value="'+c.nom+'" style="flex:2;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:13px;">'
+      +'<input id="cp_'+i+'" value="'+c.pin+'" maxlength="4" inputmode="numeric" style="flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:13px;text-align:center;" placeholder="PIN">'
+      +'<button onclick="rmCoach('+i+')" style="background:#E53935;border:none;color:white;width:32px;border-radius:8px;cursor:pointer;font-size:14px;touch-action:manipulation;">✕</button>'
+      +'</div>';
+  });
+  h+='<button onclick="addCoach()" style="width:100%;background:#E3F2FD;border:2px dashed #1565C0;color:#1565C0;padding:8px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:4px;">+ Ajouter un coach</button>';
   el.innerHTML=h;
 }
+
 function saveAdmin(){
-  var ne=[],nl=[];
-  for(var i=0;i<ACCES_EDITEURS.length;i++){var n=document.getElementById('en_'+i),p=document.getElementById('ep_'+i);if(n&&n.value.trim())ne.push({nom:n.value.trim(),pin:p?p.value.trim():''});}
-  for(var i=0;i<ACCES_LECTEURS.length;i++){var n=document.getElementById('ln_'+i);if(n&&n.value.trim())nl.push({nom:n.value.trim()});}
-  ACCES_EDITEURS=ne;ACCES_LECTEURS=nl;
-  D.updatedAt=Date.now();D.acces={editeurs:ne,lecteurs:nl};
-  saveToJsonBin().then(function(){showToast('Sauvegardé ✓','ok');}).catch(function(){});
+  var nc=[];
+  for(var i=0;i<ACCES_COACHS.length;i++){
+    var n=document.getElementById('cn_'+i);
+    var p=document.getElementById('cp_'+i);
+    if(n&&n.value.trim())nc.push({nom:n.value.trim(),pin:p?p.value.trim():''});
+  }
+  ACCES_COACHS=nc;
+  D.updatedAt=Date.now();
+  saveToJsonBin().then(function(){showToast('Accès sauvegardés ✓','ok');}).catch(function(){showToast('Erreur sauvegarde','err');});
   try{saveToLocal();}catch(e){}
   closeMo('adminMo');
 }
-function addEdit(){ACCES_EDITEURS.push({nom:'Nouveau',pin:'0000'});renderAdminPanel();}
-function rmEdit(i){ACCES_EDITEURS.splice(i,1);renderAdminPanel();}
-function addLect(){ACCES_LECTEURS.push({nom:'Nouveau lecteur'});renderAdminPanel();}
-function rmLect(i){ACCES_LECTEURS.splice(i,1);renderAdminPanel();}
-function addHistorique(a,d){if(!D.historique)D.historique=[];D.historique.unshift({ts:Date.now(),date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),action:a,detail:d||''});if(D.historique.length>50)D.historique=D.historique.slice(0,50);}
-function renderHistorique(){var el=document.getElementById('histoCont');if(!el)return;if(!D.historique||!D.historique.length){el.innerHTML='<div style="text-align:center;padding:24px;color:var(--text-light);">Aucune modification</div>';return;}var o='';D.historique.forEach(function(h){o+='<div style="padding:8px 0;border-bottom:1px solid var(--gray-mid);"><div style="font-size:13px;font-weight:700;">'+h.action+'</div><div style="font-size:12px;color:var(--text-mid);">'+h.detail+'</div><div style="font-size:11px;color:var(--text-light);">'+h.date+' '+h.heure+'</div></div>';});el.innerHTML=o;}
+
+function addCoach(){ACCES_COACHS.push({nom:'Nouveau coach',pin:'0000'});renderAdminPanel();}
+function rmCoach(i){ACCES_COACHS.splice(i,1);renderAdminPanel();}
+
+function addHistorique(a,d){
+  if(!D.historique)D.historique=[];
+  D.historique.unshift({ts:Date.now(),
+    date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),
+    heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
+    action:a,detail:d||''});
+  if(D.historique.length>50)D.historique=D.historique.slice(0,50);
+}
 </script>
 
 <!-- Hidden filter elements (kept for JS compatibility) -->
