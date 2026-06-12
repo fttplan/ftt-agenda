@@ -3228,7 +3228,8 @@ function showLoginIfNeeded(){
   if(savedCoach!==null){
     currentCoach=savedCoach||null;
     currentRole=savedRole||'lecteur';
-    if(currentRole!=='editeur')em=false;
+    if(currentRole!=='editeur'&&currentRole!=='admin')em=false;
+    try{updateAdminBtn();}catch(e){}
     return;
   }
   var ls=document.getElementById('loginScreen');
