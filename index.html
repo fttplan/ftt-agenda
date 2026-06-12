@@ -425,6 +425,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
         <!-- BARRE EDITION FIXE -->
         <div id="editModeBar" style="display:flex;align-items:center;gap:8px;padding:6px 12px;background:white;border-top:1px solid var(--gray-mid);">
           <span id="coachNameBar" style="font-size:12px;color:var(--text-light);font-family:'Barlow Semi Condensed',sans-serif;flex:1;">👤 Visiteur</span>
+          <button id="adminBtn" onclick="openAdmin()" style="display:none;background:#FFB300;border:none;color:#1A2535;padding:7px 10px;border-radius:8px;font-size:12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">👑</button>
           <button id="editModeBtn" onclick="toggleEditMode()" style="background:linear-gradient(135deg,#0D47A1,#1565C0);border:none;color:white;padding:7px 14px;border-radius:8px;font-size:12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">✏️ MODIFIER</button>
           <button onclick="logoutCoach()" style="background:var(--gray-light);border:1px solid var(--gray-mid);color:var(--text-mid);padding:7px 8px;border-radius:8px;font-size:11px;cursor:pointer;touch-action:manipulation;" title="Changer de coach">🔄</button>
         </div>
@@ -623,6 +624,24 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
       <div class="brow">
         <button class="btn-s" onclick="closeMo('statIndivMo')">Annuler</button>
         <button class="btn-p" onclick="genIndivStatsPDF()">📄 Générer PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL ADMIN -->
+<div class="mo" id="adminMo" onclick="closeOut(event,'adminMo')">
+  <div class="modal"><div class="mhandle"></div>
+    <div class="mhdr">
+      <div class="mtitle">👑 ADMINISTRATION</div>
+      <button class="mclose" onclick="closeMo('adminMo')">✕</button>
+    </div>
+    <div class="mbody">
+      <div id="adminContent"></div>
+      <div class="brow">
+        <button class="btn-s" onclick="closeMo('adminMo')">Annuler</button>
+        <button class="btn-p" onclick="saveAdmin()">💾 Enregistrer</button>
       </div>
     </div>
   </div>
@@ -866,7 +885,9 @@ var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
 var currentCoach=null;
-var currentRole=null; // 'editeur' ou 'lecteur'
+var currentRole=null; // 'editeur', 'lecteur', 'admin'
+var ADMIN_NOM='Oussama Kassis';
+var ADMIN_PIN='8888'; // PIN admin — changez-le ici
 
 // ===== LISTE DES ACCÈS =====
 // Modifiez directement ici les noms et PINs
@@ -1046,7 +1067,7 @@ function loadDemo(){
 // ===== RENDER ALL =====
 function renderAll(){
   try{renderMsg();}catch(e){}
-  try{renderTL();}catch(e){}
+  try{renderTL();updateAdminBtn();}catch(e){}
   try{renderSem();}catch(e){}
   try{renderMois();}catch(e){}
   try{renderCoachs();}catch(e){}
@@ -1062,7 +1083,7 @@ function toggleMode(){if(!em)document.getElementById('confirmOv').classList.add(
 function closeConfirm(){document.getElementById('confirmOv').classList.remove('open');}
 function confirmEdit(){closeConfirm();setEM(true);}
 function setEM(v){
-  if(v&&currentRole!=='editeur'){showToast('Accès refusé — PIN requis','err');return;}
+  if(v&&currentRole!=='editeur'&&currentRole!=='admin'){showToast('Accès refusé — PIN requis','err');return;}
   em=v;
   document.getElementById('modeBtn').classList.toggle('edit',v);
   document.getElementById('lockIc').textContent=v?'🔓':'🔒';
@@ -3254,11 +3275,11 @@ function loginAvecPin(nom){
     return;
   }
   currentCoach=nom;
-  currentRole='editeur';
-  try{localStorage.setItem('fttCoach',nom);localStorage.setItem('fttRole','editeur');}catch(e){}
+  currentRole=(nom===ADMIN_NOM)?'admin':'editeur';
+  try{localStorage.setItem('fttCoach',nom);localStorage.setItem('fttRole',currentRole);}catch(e){}
   var ls=document.getElementById('loginScreen');
   if(ls)ls.style.display='none';
-  showToast('Bienvenue '+nom+' ✓','ok');
+  showToast('Bienvenue '+nom+(currentRole==='admin'?' 👑':''+' ✓'),'ok');
   try{renderAll();}catch(e){}
 }
 
@@ -3305,7 +3326,7 @@ function addHistorique(action,detail){
 }
 
 function toggleEditMode(){
-  if(!em&&currentRole!=='editeur'){
+  if(!em&&currentRole!=='editeur'&&currentRole!=='admin'){
     showToast('Accès refusé — connectez-vous comme coach','err');
     return;
   }
@@ -3325,6 +3346,107 @@ function toggleEditMode(){
       if(bar)bar.style.borderBottomColor='var(--gray-mid)';
     }
   }
+}
+
+// ===== ADMINISTRATION =====
+function openAdmin(){
+  if(currentRole!=='admin'){showToast('Accès réservé à l\'administrateur','err');return;}
+  renderAdminPanel();
+  openMo('adminMo');
+}
+
+function renderAdminPanel(){
+  var el=document.getElementById('adminContent');
+  if(!el)return;
+
+  var html='<div style="margin-bottom:16px;">'
+    +'<div style="font-family:Barlow Condensed,sans-serif;font-size:14px;font-weight:800;color:#1565C0;margin-bottom:8px;letter-spacing:1px;">✏️ ÉDITEURS (avec PIN)</div>';
+
+  ACCES_EDITEURS.forEach(function(c,i){
+    html+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;background:#E3F2FD;border-radius:8px;padding:7px 10px;">'
+      +'<input id="edit_nom_'+i+'" value="'+c.nom+'" style="flex:2;padding:5px;border:1px solid #ccc;border-radius:6px;font-size:13px;">'
+      +'<input id="edit_pin_'+i+'" value="'+c.pin+'" maxlength="4" inputmode="numeric" style="flex:1;padding:5px;border:1px solid #ccc;border-radius:6px;font-size:13px;text-align:center;" placeholder="PIN">'
+      +'<button onclick="removeEditeur('+i+')" style="background:#E53935;border:none;color:white;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;touch-action:manipulation;">✕</button>'
+      +'</div>';
+  });
+
+  html+='<button onclick="addEditeur()" style="width:100%;background:#E3F2FD;border:2px dashed #1565C0;color:#1565C0;padding:8px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:4px;">+ Ajouter un éditeur</button>'
+    +'</div>';
+
+  html+='<div style="margin-bottom:16px;">'
+    +'<div style="font-family:Barlow Condensed,sans-serif;font-size:14px;font-weight:800;color:#555;margin-bottom:8px;letter-spacing:1px;">👁 LECTEURS (consultation)</div>';
+
+  ACCES_LECTEURS.forEach(function(c,i){
+    html+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;background:#F5F5F5;border-radius:8px;padding:7px 10px;">'
+      +'<input id="lect_nom_'+i+'" value="'+c.nom+'" style="flex:1;padding:5px;border:1px solid #ccc;border-radius:6px;font-size:13px;">'
+      +'<button onclick="removeLecteur('+i+')" style="background:#E53935;border:none;color:white;width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;touch-action:manipulation;">✕</button>'
+      +'</div>';
+  });
+
+  html+='<button onclick="addLecteur()" style="width:100%;background:#F5F5F5;border:2px dashed #999;color:#555;padding:8px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:4px;">+ Ajouter un lecteur</button>'
+    +'</div>';
+
+  el.innerHTML=html;
+}
+
+function saveAdmin(){
+  // Lire les éditeurs
+  var newEdit=[];
+  for(var i=0;i<ACCES_EDITEURS.length;i++){
+    var nomEl=document.getElementById('edit_nom_'+i);
+    var pinEl=document.getElementById('edit_pin_'+i);
+    if(nomEl&&nomEl.value.trim()){
+      newEdit.push({nom:nomEl.value.trim(),pin:pinEl?pinEl.value.trim():''});
+    }
+  }
+  ACCES_EDITEURS=newEdit;
+
+  // Lire les lecteurs
+  var newLect=[];
+  for(var i=0;i<ACCES_LECTEURS.length;i++){
+    var nomEl=document.getElementById('lect_nom_'+i);
+    if(nomEl&&nomEl.value.trim()){
+      newLect.push({nom:nomEl.value.trim()});
+    }
+  }
+  ACCES_LECTEURS=newLect;
+
+  // Sauvegarder dans JSONBin
+  D.acces={editeurs:ACCES_EDITEURS,lecteurs:ACCES_LECTEURS};
+  D.updatedAt=Date.now();
+  saveToJsonBin().then(function(){
+    showToast('Accès sauvegardés ✓','ok');
+  }).catch(function(){
+    showToast('Sauvegardé localement','ok');
+  });
+  try{saveToLocal();}catch(e){}
+  closeMo('adminMo');
+  renderLoginScreen();
+}
+
+function addEditeur(){
+  ACCES_EDITEURS.push({nom:'Nouveau coach',pin:'0000'});
+  renderAdminPanel();
+}
+function removeEditeur(i){
+  ACCES_EDITEURS.splice(i,1);
+  renderAdminPanel();
+}
+function addLecteur(){
+  ACCES_LECTEURS.push({nom:'Nouveau lecteur'});
+  renderAdminPanel();
+}
+function removeLecteur(i){
+  ACCES_LECTEURS.splice(i,1);
+  renderAdminPanel();
+}
+
+// Afficher/masquer bouton admin selon le rôle
+function updateAdminBtn(){
+  var btn=document.getElementById('adminBtn');
+  var nameEl=document.getElementById('coachNameBar');
+  if(btn)btn.style.display=(currentRole==='admin')?'block':'none';
+  if(nameEl)nameEl.textContent='👤 '+(currentCoach||'Visiteur')+(currentRole==='admin'?' 👑':'');
 }
 </script>
 
