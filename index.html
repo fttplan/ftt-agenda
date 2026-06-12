@@ -907,14 +907,14 @@ const LOGO='data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEd
 document.querySelectorAll('img[alt="FTT"]').forEach(el=>el.src=LOGO);
 
 // ===== CONSTANTS =====
-const CATS=['U12','U14 Filles','U14 Garçons','U16 Filles','U16 Garçons','U18','Pro','Autres'];
-const CC=['#1E6FA5','#E84040','#27AE60','#8E44AD','#E67E22','#2980B9','#16A085','#D35400'];
-const ABS={Absent:{ic:'❌',lb:'Absent',cl:'nj'},Justifié:{ic:'✔️',lb:'Justifiée',cl:'j'},Médical:{ic:'🏥',lb:'Médical',cl:'m'},Compétition:{ic:'🏆',lb:'Compétition',cl:'c'}};
-const PX=2.4,TLmin=7*60,TLmax=21*60;
+var CATS=['U12','U14 Filles','U14 Garçons','U16 Filles','U16 Garçons','U18','Pro','Autres'];
+var CC=['#1E6FA5','#E84040','#27AE60','#8E44AD','#E67E22','#2980B9','#16A085','#D35400'];
+var ABS={Absent:{ic:'❌',lb:'Absent',cl:'nj'},Justifié:{ic:'✔️',lb:'Justifiée',cl:'j'},Médical:{ic:'🏥',lb:'Médical',cl:'m'},Compétition:{ic:'🏆',lb:'Compétition',cl:'c'}};
+var PX=2.4,TLmin=7*60,TLmax=21*60;
 
 // ===== GOOGLE SHEETS CONFIG =====
 // Lecture ET écriture via Apps Script uniquement
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzS_F-JaOVEdgBURZIQgyVWaCQO7G_L9ipYNPNH0wiIdudkh_pgq0RpubpXkqlOcAEP8g/exec';
+var SCRIPT_URL='https://script.google.com/macros/s/AKfycbzS_F-JaOVEdgBURZIQgyVWaCQO7G_L9ipYNPNH0wiIdudkh_pgq0RpubpXkqlOcAEP8g/exec';
 
 // ===== STATE =====
 let cfg={},em=false,ctab='planning',cview='jour';
@@ -2363,7 +2363,7 @@ function generateWeekPDF(){
     const d=new Date(start);d.setDate(start.getDate()+i);
     days.push({date:fd(d),label:d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})});
   }
-  const PX=1.6,TL_MIN=7*60,TL_MAX=21*60,COL_W=110;
+  var PX=1.6,TL_MIN=7*60,TL_MAX=21*60,COL_W=110;
   const totalH=(TL_MAX-TL_MIN)*PX;
   const css=`body{font-family:Arial,sans-serif;margin:0;padding:0;color:#1A2535;font-size:10px;}
 .hdr{background:#1E6FA5;color:white;padding:10px 14px;display:flex;align-items:center;gap:10px;}
@@ -2534,14 +2534,14 @@ function buildTimelinePDFPage(title,subtitle,daysHtml){
 function generateDayTimelinePDF(dateStr){
   const d=new Date(dateStr+'T12:00:00');
   const label=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
-  const PX=2.8,TL_MIN=7*60,TL_MAX=21*60;
+  var PX=2.8,TL_MIN=7*60,TL_MAX=21*60;
   const dayHtml=buildDayTimelineHTML(dateStr,label,PX,TL_MIN,TL_MAX,250);
   const pageHtml=buildTimelinePDFPage('FTT AGENDA','Timeline du '+label,dayHtml);
   showPDFPreview(pageHtml);
 }
 
 function generatePeriodTimelinePDF(de,au){
-  const PX=1.8,TL_MIN=7*60,TL_MAX=21*60;
+  var PX=1.8,TL_MIN=7*60,TL_MAX=21*60;
   const days=[];
   let cur=new Date(de+'T12:00:00');
   const endDate=new Date(au+'T12:00:00');
