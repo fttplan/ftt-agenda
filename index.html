@@ -3449,6 +3449,29 @@ function updateAdminBtn(){
   if(btn)btn.style.display=(currentRole==='admin')?'block':'none';
   if(nameEl)nameEl.textContent='👤 '+(currentCoach||'Visiteur')+(currentRole==='admin'?' 👑':'');
 }
+
+function renderHistorique(){
+  var el=document.getElementById('histoCont');
+  if(!el)return;
+  if(!D.historique||!D.historique.length){
+    el.innerHTML='<div style="text-align:center;padding:32px;color:var(--text-light);">'
+      +'<div style="font-size:36px;margin-bottom:8px;">📋</div>'
+      +'<div>Aucune modification enregistrée</div></div>';
+    return;
+  }
+  var out='';
+  D.historique.forEach(function(h){
+    var icon=h.action==='Séance'?'📅':h.action==='Coach'?'👤':h.action==='Joueur'?'🎾':h.action==='Absence'?'⚠️':'📝';
+    out+='<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-mid);">'
+      +'<div style="font-size:22px;">'+icon+'</div>'
+      +'<div style="flex:1;">'
+      +'<div style="font-size:13px;font-weight:700;color:var(--text);">'+h.action+'</div>'
+      +'<div style="font-size:12px;color:var(--text-mid);">'+h.detail+'</div>'
+      +'<div style="font-size:11px;color:var(--text-light);margin-top:2px;">'+h.date+' à '+h.heure+'</div>'
+      +'</div></div>';
+  });
+  el.innerHTML=out;
+}
 </script>
 
 <!-- Hidden filter elements (kept for JS compatibility) -->
