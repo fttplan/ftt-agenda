@@ -406,6 +406,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
       </button>
       <button class="sync-btn" id="syncBtn" onclick="syncNow()" title="Synchroniser">⟳</button>
       <button onclick="saveNow()" style="background:var(--yellow);border:none;color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;letter-spacing:1px;" id="saveBtn">💾 SAVE</button>
+      <button id="adminBtn" onclick="openAdmin()" style="display:none;background:#1565C0;border:none;color:white;padding:5px 10px;border-radius:6px;font-size:12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">👑 ADMIN</button>
     </div>
   </header>
   <div class="status-bar">
@@ -858,15 +859,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
       <div class="pdf-opt" id="po-p" onclick="selPdf('p')"><div style="font-size:20px;flex-shrink:0;">📅</div><div><div style="font-size:13px;font-weight:600;">Timeline visuelle</div><div style="font-size:11px;color:var(--text-light);">Format timeline jour ou période</div></div></div>
       <div class="fg" id="pdfJGrp" style="margin-top:10px;"><label class="fl">Joueur</label><select class="fs" id="pdfJ"></select></div>
       <div class="frow" style="margin-top:6px;">
-        <div class="fg"><label class="fl">Du</label><input type="date" class="fi" id="pdfDe"></div>
-        <div class="fg"><label class="fl">Au</label><input type="date" class="fi" id="pdfAu"></div>
-      </div>
-      <button class="btn-p" onclick="genPDF()">📄 Générer PDF</button>
-    </div>
-  </div>
-</div>
-
-<script>// ===== CONFIG =====
+        <div class="fg"><label class="// ===== CONFIG =====
 var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
@@ -1070,6 +1063,7 @@ function setEM(v){
 
 // ===== TABS =====
 function showTab(n,btn){if(n==='stats')setTimeout(initStats,100);
+  if(currentRole==='invite'&&n!=='planning'){showToast('Accès limité — mode invité','err');return;}
   ctab=n;
   document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.nav-b').forEach(el=>el.classList.remove('active'));
@@ -3228,10 +3222,7 @@ function doLogin(){
   var ico=currentRole==='admin'?' 👑':currentRole==='coach'?' ✏️':' 👁';
   showToast('Bienvenue '+currentCoach+ico,'ok');
   try{renderAll();}catch(e){}
-  try{
-    var ab=document.getElementById('adminBtn');
-    if(ab)ab.style.display=(currentRole==='admin')?'inline-block':'none';
-  }catch(e){}
+  try{updateNavForRole();}catch(e){}
 }
 
 // ===== ADMIN =====
@@ -3274,6 +3265,30 @@ function rmCoach(i){ACCES_COACHS.splice(i,1);renderAdminPanel();}
 function addHistorique(a,d){
   if(!D.historique)D.historique=[];
   D.historique.unshift({ts:Date.now(),
+    date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),
+    heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
+    action:a,detail:d||''});
+  if(D.historique.length>50)D.historique=D.historique.slice(0,50);
+}
+
+function updateNavForRole(){
+  var role=currentRole||'invite';
+  var tabs=['coachs','joueurs','abs','comps','stats','msg'];
+  tabs.forEach(function(t){
+    var btn=document.getElementById('nav-'+t);
+    if(btn)btn.style.display=(role==='invite')?'none':'flex';
+  });
+  // Bouton admin
+  var ab=document.getElementById('adminBtn');
+  if(ab)ab.style.display=(role==='admin')?'inline-block':'none';
+  // Bouton SAVE
+  var sb=document.getElementById('saveBtn');
+  if(sb)sb.style.display=(role==='invite')?'none':'inline-block';
+  // Bouton mode édition
+  var mb=document.getElementById('modeBtn');
+  if(mb)mb.style.display=(role==='invite')?'none':'flex';
+}
+ift({ts:Date.now(),
     date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),
     heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
     action:a,detail:d||''});
