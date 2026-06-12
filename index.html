@@ -866,6 +866,31 @@ var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
 var currentCoach=null;
+var currentRole=null; // 'editeur' ou 'lecteur'
+
+// ===== LISTE DES ACCÈS =====
+// Modifiez directement ici les noms et PINs
+var ACCES_EDITEURS=[
+  {nom:'Moez Hachaichi',   pin:'1111'},
+  {nom:'Fares Zaier',      pin:'2222'},
+  {nom:'Ahmed Noamen',     pin:'3333'},
+  {nom:'Omar laabidi',     pin:'4444'},
+  {nom:'Seif Ben Slimene', pin:'5555'},
+  {nom:'Ameur ben hassan', pin:'6666'},
+  {nom:'Achraf Omrane',    pin:'7777'},
+  {nom:'Oussama Kassis',   pin:'8888'},
+  {nom:'Nadia Charfi',     pin:'9999'},
+  {nom:'Ines Zribi',       pin:'0000'},
+  {nom:'Sami Trabelsi',    pin:'1212'},
+  {nom:'Ahmed Ben Ali',    pin:'3434'},
+];
+var ACCES_LECTEURS=[
+  {nom:'Wahid Alioua'},
+  {nom:'Lecteur 2'},
+  {nom:'Lecteur 3'},
+  {nom:'Lecteur 4'},
+  {nom:'Lecteur 5'},
+];
 
 // ===== STATE =====
 let cfg={},em=false,ctab='planning',cview='jour';
@@ -951,18 +976,9 @@ function startApp(){
 
 // ===== AUTO SYNC =====
 function initAutoSync(){
-  try{
-    syncCountdown=120;
-    if(syncTimer)clearInterval(syncTimer);
-    syncTimer=setInterval(function(){
-      try{
-        syncCountdown--;
-        const el=document.getElementById('syncCountdown');
-        if(el)el.textContent=syncCountdown>0?'(sync dans '+syncCountdown+'s)':'';
-        if(syncCountdown<=0){syncNow();syncCountdown=120;}
-      }catch(e){}
-    },1000);
-  }catch(e){}
+  // Auto-sync désactivée — utiliser ⟳ pour synchroniser manuellement
+  var el=document.getElementById('syncCountdown');
+  if(el)el.textContent='';
 }
 async function syncNow(){
   try{
@@ -1046,6 +1062,7 @@ function toggleMode(){if(!em)document.getElementById('confirmOv').classList.add(
 function closeConfirm(){document.getElementById('confirmOv').classList.remove('open');}
 function confirmEdit(){closeConfirm();setEM(true);}
 function setEM(v){
+  if(v&&currentRole!=='editeur'){showToast('Accès refusé — PIN requis','err');return;}
   em=v;
   document.getElementById('modeBtn').classList.toggle('edit',v);
   document.getElementById('lockIc').textContent=v?'🔓':'🔒';
@@ -3185,9 +3202,14 @@ async function loadFromJsonBin(){
 
 // ===== COACH LOGIN =====
 function showLoginIfNeeded(){
-  var savedCoach=null;
-  try{savedCoach=localStorage.getItem('fttCoach');}catch(e){}
-  if(savedCoach!==null){currentCoach=savedCoach||null;return;}
+  var savedCoach=null,savedRole=null;
+  try{savedCoach=localStorage.getItem('fttCoach');savedRole=localStorage.getItem('fttRole');}catch(e){}
+  if(savedCoach!==null){
+    currentCoach=savedCoach||null;
+    currentRole=savedRole||'lecteur';
+    if(currentRole!=='editeur')em=false;
+    return;
+  }
   var ls=document.getElementById('loginScreen');
   if(ls){renderLoginScreen();ls.style.display='flex';}
 }
@@ -3196,18 +3218,66 @@ function renderLoginScreen(){
   var list=document.getElementById('coachList');
   if(!list)return;
   try{document.getElementById('loginLogo').src=LOGO;}catch(e){}
-  if(!D.coachs||!D.coachs.length){
-    list.innerHTML='<div style="text-align:center;color:#999;padding:12px;">Aucun coach configuré.<br>Continuez en mode consultation.</div>';
+
+  var html='<div style="font-size:11px;color:#999;margin-bottom:8px;text-align:center;letter-spacing:0.5px;">COACHS — Entrez votre PIN</div>';
+  
+  // Éditeurs avec champ PIN
+  ACCES_EDITEURS.forEach(function(c){
+    html+='<div style="margin-bottom:6px;background:#E3F2FD;border:2px solid #1565C0;border-radius:12px;padding:10px 12px;">'
+      +'<div style="font-size:14px;font-weight:800;color:#0D47A1;font-family:Barlow Condensed,sans-serif;">✏️ '+c.nom+'</div>'
+      +'<div style="display:flex;gap:6px;margin-top:6px;">'
+      +'<input type="password" inputmode="numeric" maxlength="4" placeholder="PIN" id="pin_'+c.nom.replace(/\s/g,'_')+'" style="flex:1;padding:7px;border:1px solid #ccc;border-radius:8px;font-size:16px;text-align:center;" />'
+      +'<button onclick="loginAvecPin('+JSON.stringify(c.nom)+')" style="background:#1565C0;border:none;color:white;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;">OK</button>'
+      +'</div></div>';
+  });
+
+  // Séparateur
+  html+='<div style="border-top:1px solid #EEE;margin:10px 0;padding-top:10px;font-size:11px;color:#999;text-align:center;">CONSULTATION UNIQUEMENT</div>';
+
+  // Lecteurs sans PIN
+  ACCES_LECTEURS.forEach(function(c){
+    html+='<button onclick="loginLecteur('+JSON.stringify(c.nom)+')" style="width:100%;background:#F5F5F5;border:1px solid #DDD;color:#555;padding:9px 12px;border-radius:10px;font-size:13px;font-family:Barlow Condensed,sans-serif;font-weight:700;cursor:pointer;text-align:left;margin-bottom:4px;touch-action:manipulation;">👁 '+c.nom+'</button>';
+  });
+
+  list.innerHTML=html;
+}
+
+function loginAvecPin(nom){
+  var pinId='pin_'+nom.replace(/\s/g,'_');
+  var pinEl=document.getElementById(pinId);
+  var pin=pinEl?pinEl.value:'';
+  var editeur=ACCES_EDITEURS.find(function(c){return c.nom===nom;});
+  if(!editeur){showToast('Coach introuvable','err');return;}
+  if(pin!==editeur.pin){
+    showToast('PIN incorrect','err');
+    if(pinEl){pinEl.value='';pinEl.style.border='2px solid red';}
     return;
   }
-  list.innerHTML=D.coachs.map(function(c){
-    return '<button onclick="loginCoach('+JSON.stringify(c.nom)+')" style="width:100%;background:#E3F2FD;border:2px solid #1565C0;color:#0D47A1;padding:12px;border-radius:12px;font-size:15px;font-family:Barlow Condensed,sans-serif;font-weight:800;cursor:pointer;text-align:left;margin-bottom:4px;touch-action:manipulation;">👤 '+c.nom+'<span style="font-size:11px;font-weight:400;color:#666;display:block;">'+(c.mission||'Coach')+'</span></button>';
-  }).join('');
+  currentCoach=nom;
+  currentRole='editeur';
+  try{localStorage.setItem('fttCoach',nom);localStorage.setItem('fttRole','editeur');}catch(e){}
+  var ls=document.getElementById('loginScreen');
+  if(ls)ls.style.display='none';
+  showToast('Bienvenue '+nom+' ✓','ok');
+  try{renderAll();}catch(e){}
+}
+
+function loginLecteur(nom){
+  currentCoach=nom;
+  currentRole='lecteur';
+  em=false;
+  try{localStorage.setItem('fttCoach',nom);localStorage.setItem('fttRole','lecteur');}catch(e){}
+  var ls=document.getElementById('loginScreen');
+  if(ls)ls.style.display='none';
+  showToast('Bienvenue '+nom,'ok');
+  try{renderAll();}catch(e){}
 }
 
 function loginCoach(nom){
+  // Gardé pour compatibilité — utiliser loginAvecPin ou loginLecteur
   currentCoach=nom;
-  try{localStorage.setItem('fttCoach',nom||'');}catch(e){}
+  currentRole='lecteur';
+  try{localStorage.setItem('fttCoach',nom||'');localStorage.setItem('fttRole','lecteur');}catch(e){}
   var ls=document.getElementById('loginScreen');
   if(ls)ls.style.display='none';
   showToast('Bienvenue '+(nom||''),'ok');
@@ -3216,10 +3286,11 @@ function loginCoach(nom){
 
 function logoutCoach(){
   currentCoach=null;
-  try{localStorage.removeItem('fttCoach');}catch(e){}
+  currentRole=null;
+  em=false;
+  try{localStorage.removeItem('fttCoach');localStorage.removeItem('fttRole');}catch(e){}
   var ls=document.getElementById('loginScreen');
   if(ls){ls.style.display='flex';renderLoginScreen();}
-  em=false;
   try{renderAll();}catch(e){}
 }
 
@@ -3234,6 +3305,10 @@ function addHistorique(action,detail){
 }
 
 function toggleEditMode(){
+  if(!em&&currentRole!=='editeur'){
+    showToast('Accès refusé — connectez-vous comme coach','err');
+    return;
+  }
   setEM(!em);
   var btn=document.getElementById('editModeBtn');
   var bar=document.getElementById('editModeBar');
