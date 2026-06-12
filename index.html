@@ -3267,40 +3267,41 @@ function onLoginSelect(){
 }
 
 function doLogin(){
-  var sel=document.getElementById('loginSelect');
-  var nom=sel?sel.value:'';
-  if(!nom){showToast('Choisissez votre nom','err');return;}
-  var pin=document.getElementById('loginPin')?document.getElementById('loginPin').value.trim():'';
-
-  if(nom.indexOf('__L__')===0){
-    currentCoach=nom.substring(5);
-    currentRole='lecteur';
-    em=false;
-  }else{
-    var editeur=null;
-    for(var i=0;i<ACCES_EDITEURS.length;i++){
-      if(ACCES_EDITEURS[i].nom===nom){editeur=ACCES_EDITEURS[i];break;}
-    }
-    if(!editeur||pin!==editeur.pin){
-      showToast('PIN incorrect','err');
-      var pi=document.getElementById('loginPin');
-      if(pi)pi.value='';
-      return;
-    }
-    currentCoach=nom;
-    currentRole=(nom===ADMIN_NOM)?'admin':'editeur';
-  }
-
-  var ls=document.getElementById('loginScreen');
-  if(ls)ls.style.display='none';
-  showToast('Bienvenue '+currentCoach+(currentRole==='admin'?' 👑':currentRole==='editeur'?' ✏️':' 👁'),'ok');
-  try{renderAll();}catch(e){}
   try{
-    if(currentRole==='admin'){
-      var ab=document.getElementById('adminBtn');
-      if(ab)ab.style.display='inline-block';
+    var sel=document.getElementById('loginSelect');
+    var nom=sel?sel.value:'';
+    if(!nom){alert('Choisissez votre nom');return;}
+    var pinEl=document.getElementById('loginPin');
+    var pin=pinEl?pinEl.value.trim():'';
+
+    if(nom.indexOf('__L__')===0){
+      currentCoach=nom.substring(5);
+      currentRole='lecteur';
+      em=false;
+    }else{
+      var editeur=null;
+      for(var i=0;i<ACCES_EDITEURS.length;i++){
+        if(ACCES_EDITEURS[i].nom===nom){editeur=ACCES_EDITEURS[i];break;}
+      }
+      if(!editeur){alert('Nom introuvable: '+nom);return;}
+      if(pin!==editeur.pin){alert('PIN incorrect. PIN saisi: "'+pin+'" PIN attendu: "'+editeur.pin+'"');return;}
+      currentCoach=nom;
+      currentRole=(nom===ADMIN_NOM)?'admin':'editeur';
     }
-  }catch(e){}
+
+    var ls=document.getElementById('loginScreen');
+    if(ls)ls.style.display='none';
+    
+    try{renderAll();}catch(e){alert('Erreur renderAll: '+e.message);}
+    
+    if(currentRole==='admin'){
+      try{document.getElementById('adminBtn').style.display='inline-block';}catch(e){}
+    }
+    
+    alert('Connecté: '+currentCoach+' ('+currentRole+')');
+  }catch(e){
+    alert('Erreur doLogin: '+e.message);
+  }
 }
 
 function setEM(v){
