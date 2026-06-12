@@ -951,23 +951,30 @@ const showConflict=()=>{const b=document.getElementById('cflct');b.classList.add
 // ===== INIT =====
 window.onload=function(){
   cfg={demo:true};
-  // Initialiser le logo
+  // Logo
   try{
     var imgs=document.querySelectorAll('img[alt="FTT"]');
     for(var i=0;i<imgs.length;i++){imgs[i].src=LOGO;}
   }catch(e){}
-  // Démarrer après animation splash
+  // Masquer splash
   setTimeout(function(){
+    try{document.getElementById('splash').style.display='none';}catch(e){}
     try{document.getElementById('splash').classList.add('hidden');}catch(e){}
+    // Effacer ancienne session
+    try{localStorage.removeItem('fttCoach');localStorage.removeItem('fttRole');}catch(e){}
+    // Charger données
     try{startApp();}catch(e){
-      try{
-        document.getElementById('mainApp').style.display='block';
-        loadDemo();
-        renderAll();
-        setStatus('ok','Prêt');
-      }catch(e2){}
+      try{loadDemo();renderAll();}catch(e2){}
     }
-  },1200);
+    // Afficher login APRÈS que le DOM est prêt
+    setTimeout(function(){
+      try{
+        renderLoginScreen();
+        var ls=document.getElementById('loginScreen');
+        if(ls)ls.style.display='flex';
+      }catch(e){}
+    },200);
+  },800);
 };
 function saveConfig(){const id=document.getElementById('setupId').value.trim(),key=document.getElementById('setupKey').value.trim();if(!id||!key){showToast('Remplissez tous les champs','err');return;}cfg={sheetId:id,apiKey:key};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
 function startDemo(){cfg={demo:true};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
@@ -3593,23 +3600,30 @@ const showConflict=()=>{const b=document.getElementById('cflct');b.classList.add
 // ===== INIT =====
 window.onload=function(){
   cfg={demo:true};
-  // Initialiser le logo
+  // Logo
   try{
     var imgs=document.querySelectorAll('img[alt="FTT"]');
     for(var i=0;i<imgs.length;i++){imgs[i].src=LOGO;}
   }catch(e){}
-  // Démarrer après animation splash
+  // Masquer splash
   setTimeout(function(){
+    try{document.getElementById('splash').style.display='none';}catch(e){}
     try{document.getElementById('splash').classList.add('hidden');}catch(e){}
+    // Effacer ancienne session
+    try{localStorage.removeItem('fttCoach');localStorage.removeItem('fttRole');}catch(e){}
+    // Charger données
     try{startApp();}catch(e){
-      try{
-        document.getElementById('mainApp').style.display='block';
-        loadDemo();
-        renderAll();
-        setStatus('ok','Prêt');
-      }catch(e2){}
+      try{loadDemo();renderAll();}catch(e2){}
     }
-  },1200);
+    // Afficher login APRÈS que le DOM est prêt
+    setTimeout(function(){
+      try{
+        renderLoginScreen();
+        var ls=document.getElementById('loginScreen');
+        if(ls)ls.style.display='flex';
+      }catch(e){}
+    },200);
+  },800);
 };
 function saveConfig(){const id=document.getElementById('setupId').value.trim(),key=document.getElementById('setupKey').value.trim();if(!id||!key){showToast('Remplissez tous les champs','err');return;}cfg={sheetId:id,apiKey:key};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
 function startDemo(){cfg={demo:true};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
