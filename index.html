@@ -333,7 +333,36 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
   <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:white;letter-spacing:3px;margin-bottom:2px;">FTT AGENDA</div>
   <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:20px;letter-spacing:1px;">VERSION 1.1</div>
   <div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(0,0,0,0.3);">
-    <div id="coachList"></div>
+    <div style="font-size:12px;color:#999;margin-bottom:10px;text-align:center;font-weight:600;">SÉLECTIONNEZ VOTRE NOM</div>
+    <select id="loginSelect" onchange="onLoginSelect()" style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:15px;color:#0D47A1;background:white;margin-bottom:12px;box-sizing:border-box;">
+      <option value="">-- Choisir --</option>
+      <optgroup label="Coachs (avec PIN)">
+        <option value="Moez Hachaichi">Moez Hachaichi</option>
+        <option value="Fares Zaier">Fares Zaier</option>
+        <option value="Ahmed Noamen">Ahmed Noamen</option>
+        <option value="Omar laabidi">Omar laabidi</option>
+        <option value="Seif Ben Slimene">Seif Ben Slimene</option>
+        <option value="Ameur ben hassan">Ameur ben hassan</option>
+        <option value="Achraf Omrane">Achraf Omrane</option>
+        <option value="Oussama Kassis">Oussama Kassis</option>
+        <option value="Nadia Charfi">Nadia Charfi</option>
+        <option value="Ines Zribi">Ines Zribi</option>
+        <option value="Sami Trabelsi">Sami Trabelsi</option>
+        <option value="Ahmed Ben Ali">Ahmed Ben Ali</option>
+      </optgroup>
+      <optgroup label="Consultation uniquement">
+        <option value="__L__Wahid Alioua">Wahid Alioua</option>
+        <option value="__L__Lecteur 2">Lecteur 2</option>
+        <option value="__L__Lecteur 3">Lecteur 3</option>
+        <option value="__L__Lecteur 4">Lecteur 4</option>
+        <option value="__L__Lecteur 5">Lecteur 5</option>
+      </optgroup>
+    </select>
+    <div id="pinSection" style="display:none;margin-bottom:12px;">
+      <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Code PIN (4 chiffres)"
+        style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:20px;text-align:center;letter-spacing:6px;box-sizing:border-box;">
+    </div>
+    <button onclick="doLogin()" style="width:100%;background:#1565C0;border:none;color:white;padding:13px;border-radius:10px;font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;letter-spacing:1px;">ACCÉDER →</button>
   </div>
 </div>
 
@@ -918,41 +947,20 @@ window.onload=function(){
     var imgs=document.querySelectorAll('img[alt="FTT"]');
     for(var i=0;i<imgs.length;i++){imgs[i].src=LOGO;}
   }catch(e){}
-  // Étape 1: après 1s, masquer splash et démarrer l'app
+  // Masquer splash et montrer login
   setTimeout(function(){
-    try{document.getElementById('splash').classList.add('hidden');}catch(e){}
-    try{document.getElementById('splash').style.display='none';}catch(e){}
+    try{
+      var sp=document.getElementById('splash');
+      if(sp)sp.style.display='none';
+    }catch(e){}
+    try{
+      var ls=document.getElementById('loginScreen');
+      if(ls)ls.style.display='flex';
+    }catch(e){}
+    // Démarrer l'app en arrière-plan
     try{startApp();}catch(e){
       try{loadDemo();renderAll();}catch(e2){}
     }
-    // Étape 2: après encore 500ms, afficher le login
-    setTimeout(function(){
-      try{
-        var ls=document.getElementById('loginScreen');
-        var list=document.getElementById('coachList');
-        if(ls&&list){
-          // Construire le HTML directement sans fonction séparée
-          var h='<div style="font-size:12px;color:#999;margin-bottom:10px;text-align:center;">SÉLECTIONNEZ VOTRE NOM</div>';
-          h+='<select id="loginSelect" onchange="onLoginSelect()" style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:15px;color:#0D47A1;background:white;margin-bottom:12px;">';
-          h+='<option value="">-- Choisir --</option>';
-          for(var i=0;i<ACCES_EDITEURS.length;i++){
-            h+='<option value="'+ACCES_EDITEURS[i].nom+'">'+ACCES_EDITEURS[i].nom+'</option>';
-          }
-          for(var j=0;j<ACCES_LECTEURS.length;j++){
-            h+='<option value="__L__'+ACCES_LECTEURS[j].nom+'">'+ACCES_LECTEURS[j].nom+' (consultation)</option>';
-          }
-          h+='</select>';
-          h+='<div id="pinSection" style="display:none;margin-bottom:12px;">';
-          h+='<input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Code PIN" style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:20px;text-align:center;letter-spacing:6px;box-sizing:border-box;">';
-          h+='</div>';
-          h+='<button onclick="doLogin()" style="width:100%;background:#1565C0;border:none;color:white;padding:13px;border-radius:10px;font-size:16px;font-weight:800;cursor:pointer;touch-action:manipulation;">ACCÉDER →</button>';
-          list.innerHTML=h;
-          // Logo
-          try{document.getElementById('loginLogo').src=LOGO;}catch(e){}
-          ls.style.display='flex';
-        }
-      }catch(e){}
-    },500);
   },1000);
 };
 function saveConfig(){const id=document.getElementById('setupId').value.trim(),key=document.getElementById('setupKey').value.trim();if(!id||!key){showToast('Remplissez tous les champs','err');return;}cfg={sheetId:id,apiKey:key};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
