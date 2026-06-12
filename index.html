@@ -3223,15 +3223,7 @@ async function loadFromJsonBin(){
 
 // ===== COACH LOGIN =====
 function showLoginIfNeeded(){
-  var savedCoach=null,savedRole=null;
-  try{savedCoach=localStorage.getItem('fttCoach');savedRole=localStorage.getItem('fttRole');}catch(e){}
-  if(savedCoach!==null){
-    currentCoach=savedCoach||null;
-    currentRole=savedRole||'lecteur';
-    if(currentRole!=='editeur'&&currentRole!=='admin')em=false;
-    try{updateAdminBtn();}catch(e){}
-    return;
-  }
+  // Toujours afficher le login au démarrage
   var ls=document.getElementById('loginScreen');
   if(ls){renderLoginScreen();ls.style.display='flex';}
 }
@@ -3241,7 +3233,13 @@ function renderLoginScreen(){
   if(!list)return;
   try{document.getElementById('loginLogo').src=LOGO;}catch(e){}
 
+  var lastCoach=null;
+  try{lastCoach=localStorage.getItem('fttCoach');}catch(e){}
   var html='<div style="font-size:11px;color:#999;margin-bottom:8px;text-align:center;letter-spacing:0.5px;">COACHS — Entrez votre PIN</div>';
+  if(lastCoach){
+    html='<div style="background:#E8F5E9;border:1px solid #2E7D32;border-radius:8px;padding:8px 10px;margin-bottom:10px;font-size:12px;color:#2E7D32;text-align:center;font-family:Barlow Semi Condensed,sans-serif;font-weight:600;">👤 Dernière connexion: '+lastCoach+'</div>'
+      +'<div style="font-size:11px;color:#999;margin-bottom:8px;text-align:center;letter-spacing:0.5px;">COACHS — Entrez votre PIN</div>';
+  }
   
   // Éditeurs avec champ PIN
   ACCES_EDITEURS.forEach(function(c){
