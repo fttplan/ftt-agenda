@@ -942,6 +942,8 @@ function _boot(){
           body:JSON.stringify({planning:[],joueurs:[],coachs:[],absences:[],competitions:[],notes:{},msg:{},historique:[],acces:{coachs:ACCES_COACHS},updatedAt:Date.now()})
         });
       }catch(e){}
+  // Charger accès mémorisés localement
+  try{var sa=localStorage.getItem('fttAcces');if(sa){var pa=JSON.parse(sa);if(pa&&pa.length)ACCES_COACHS=pa;}}catch(e){}
     }
   }catch(e){}
 
@@ -3115,6 +3117,13 @@ async function loadFromJsonBin(){
   if(!res.ok)throw new Error('JSONBin '+res.status);
   var data=(await res.json()).record;if(!data)return;
   var rt=data.updatedAt||0;
+  // Les ACCÈS (coachs/PINs) se synchronisent TOUJOURS, indépendamment du timestamp
+  // car l'admin peut les modifier à tout moment
+  if(data.acces&&data.acces.coachs&&data.acces.coachs.length){
+    ACCES_COACHS=data.acces.coachs;
+    try{localStorage.setItem('fttAcces',JSON.stringify(ACCES_COACHS));}catch(e){}
+  }
+  // Les DONNÉES (planning, joueurs...) suivent la règle du timestamp
   if(rt>=(D.updatedAt||0)){
     if(data.planning&&data.planning.length)D.planning=data.planning;
     if(data.joueurs&&data.joueurs.length)D.joueurs=data.joueurs;
@@ -3123,7 +3132,6 @@ async function loadFromJsonBin(){
     if(data.competitions)D.competitions=data.competitions;
     if(data.notes)D.notes=data.notes;
     if(data.historique)D.historique=data.historique;
-    if(data.acces&&data.acces.coachs)ACCES_COACHS=data.acces.coachs;
     D.updatedAt=rt;
   }
 }
@@ -3237,10 +3245,17 @@ function renderAdminPanel(){
 function saveAdmin(){
   var nc=[];
   for(var i=0;i<ACCES_COACHS.length;i++){var n=document.getElementById('cn_'+i),p=document.getElementById('cp_'+i);if(n&&n.value.trim())nc.push({nom:n.value.trim(),pin:p?p.value.trim():''});}
-  ACCES_COACHS=nc;D.updatedAt=Date.now();
-  saveToJsonBin().then(function(){showToast('Acces sauvegardes','ok');}).catch(function(){showToast('Erreur','err');});
+  ACCES_COACHS=nc;
+  D.updatedAt=Date.now();
+  try{localStorage.setItem('fttAcces',JSON.stringify(ACCES_COACHS));}catch(e){}
   try{saveToLocal();}catch(e){}
-  closeMo('adminMo');
+  showToast('Sauvegarde en cours...','ok');
+  saveToJsonBin().then(function(){
+    showToast('Accès enregistrés en ligne ✓','ok');
+    closeMo('adminMo');
+  }).catch(function(){
+    showToast('⚠️ Erreur réseau — réessayez','err');
+  });
 }
 function addCoach(){ACCES_COACHS.push({nom:'Nouveau coach',pin:'00000'});renderAdminPanel();}
 function rmCoach(i){ACCES_COACHS.splice(i,1);renderAdminPanel();}
