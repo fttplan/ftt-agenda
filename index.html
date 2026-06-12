@@ -392,7 +392,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
       </button>
       <button class="sync-btn" id="syncBtn" onclick="syncNow()" title="Synchroniser">⟳</button>
       <button onclick="saveNow()" style="background:var(--yellow);border:none;color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;letter-spacing:1px;" id="saveBtn">💾 SAVE</button>
-      <button id="adminBtn" onclick="openAdmin()" style="display:none;background:#1565C0;border:none;color:white;padding:5px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">👑 ADMIN</button>
+      <button id="adminBtn" onclick="openAdmin()" style="display:none;background:#FFB300;border:none;color:#1A2535;padding:5px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">👑 ADMIN</button>
     </div>
   </header>
   <div class="status-bar">
@@ -854,7 +854,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
   </div>
 </div>
 
-<script>
+<scrip
 var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
@@ -3178,11 +3178,17 @@ function doLoginPin(){
     return;
   }
   currentCoach=coach.nom;
-  currentRole=(coach.nom===ADMIN_NOM&&pin===ADMIN_PIN)?'admin':'coach';
+  currentRole=(coach.pin===ADMIN_PIN)?'admin':'coach';
   try{document.getElementById('loginScreen').style.display='none';}catch(e){}
-  showToast('Bienvenue '+coach.nom,'ok');
+  showToast('Bienvenue '+coach.nom+(currentRole==='admin'?' 👑':''),'ok');
   try{renderAll();}catch(e){}
-  setTimeout(function(){try{updateNavForRole();}catch(e){}},150);
+  // Afficher bouton admin immédiatement + après délai (double sécurité)
+  if(currentRole==='admin'){
+    var ab=document.getElementById('adminBtn');
+    if(ab)ab.style.display='inline-block';
+  }
+  try{updateNavForRole();}catch(e){}
+  setTimeout(function(){try{updateNavForRole();}catch(e){}},300);
 }
 function doLoginInvite(){
   currentCoach='Invité';currentRole='invite';em=false;
@@ -3252,6 +3258,7 @@ var _refreshTimer=setInterval(function(){
     }
   }).catch(function(){});
 },60000);
+;
 </script>
 
 <!-- Hidden filter elements (kept for JS compatibility) -->
