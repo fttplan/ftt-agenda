@@ -406,6 +406,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
       </button>
       <button class="sync-btn" id="syncBtn" onclick="syncNow()" title="Synchroniser">⟳</button>
       <button onclick="saveNow()" style="background:var(--yellow);border:none;color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;letter-spacing:1px;" id="saveBtn">💾 SAVE</button>
+      <button id="adminBtn" onclick="openAdmin()" style="display:none;background:#1565C0;border:none;color:white;padding:5px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">👑 ADMIN</button>
     </div>
   </header>
   <div class="status-bar">
@@ -858,15 +859,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
       <div class="pdf-opt" id="po-p" onclick="selPdf('p')"><div style="font-size:20px;flex-shrink:0;">📅</div><div><div style="font-size:13px;font-weight:600;">Timeline visuelle</div><div style="font-size:11px;color:var(--text-light);">Format timeline jour ou période</div></div></div>
       <div class="fg" id="pdfJGrp" style="margin-top:10px;"><label class="fl">Joueur</label><select class="fs" id="pdfJ"></select></div>
       <div class="frow" style="margin-top:6px;">
-        <div class="fg"><label class="fl">Du</label><input type="date" class="fi" id="pdfDe"></div>
-        <div class="fg"><label class="fl">Au</label><input type="date" class="fi" id="pdfAu"></div>
-      </div>
-      <button class="btn-p" onclick="genPDF()">📄 Générer PDF</button>
-    </div>
-  </div>
-</div>
-
-<script>var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
+        <div class="fg"><label class="var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
 var ADMIN_NOM='Oussama Kassis';
@@ -3183,7 +3176,10 @@ function doLogin(){
   try{document.getElementById('loginScreen').style.display='none';}catch(e){}
   showToast('Bienvenue '+currentCoach+(currentRole==='admin'?' 👑':currentRole==='coach'?' ✏️':' 👁'),'ok');
   try{renderAll();}catch(e){}
-  try{updateNavForRole();}catch(e){}
+  // Délai pour s'assurer que le DOM est rendu
+  setTimeout(function(){
+    try{updateNavForRole();}catch(e){}
+  },100);
 }
 
 function updateNavForRole(){
@@ -3246,6 +3242,13 @@ function saveAdmin(){
   }
   ACCES_COACHS=nc;D.updatedAt=Date.now();
   saveToJsonBin().then(function(){showToast('Accès sauvegardés ✓','ok');}).catch(function(){showToast('Erreur','err');});
+  try{saveToLocal();}catch(e){}
+  closeMo('adminMo');
+}
+
+function addCoach(){ACCES_COACHS.push({nom:'Nouveau coach',pin:'0000'});renderAdminPanel();}
+function rmCoach(i){ACCES_COACHS.splice(i,1);renderAdminPanel();}
+ardés ✓','ok');}).catch(function(){showToast('Erreur','err');});
   try{saveToLocal();}catch(e){}
   closeMo('adminMo');
 }
