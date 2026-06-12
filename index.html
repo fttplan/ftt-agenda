@@ -328,11 +328,11 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
 
 <!-- SPLASH -->
 <div id="loginScreen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0D47A1,#1565C0 60%,#E53935);z-index:10000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
-  <img id="loginLogo" alt="FTT" style="width:80px;height:80px;object-fit:contain;background:white;border-radius:20px;padding:8px;margin-bottom:14px;">
+  <img id="loginLogo" alt="FTT" style="width:80px;height:80px;object-fit:contain;background:white;border-radius:20px;padding:8px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,0.3);">
   <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:white;letter-spacing:3px;margin-bottom:2px;">FTT AGENDA</div>
   <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:20px;">VERSION 1.1</div>
-  <div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;">
-    <div style="font-size:12px;color:#999;margin-bottom:10px;text-align:center;font-weight:600;">QUI ÊTES-VOUS ?</div>
+  <div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(0,0,0,0.3);">
+    <div style="font-size:12px;color:#999;margin-bottom:10px;text-align:center;font-weight:600;">QUI ETES-VOUS ?</div>
     <select id="loginSelect" style="width:100%;padding:12px;border:2px solid #1565C0;border-radius:10px;font-size:15px;color:#0D47A1;background:white;margin-bottom:10px;box-sizing:border-box;">
       <option value="">-- Choisir --</option>
       <optgroup label="Coachs (PIN requis)">
@@ -353,11 +353,11 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
         <option value="invite">Invite - consultation uniquement</option>
       </optgroup>
     </select>
-    <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Code PIN (coachs uniquement)"
-      style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;box-sizing:border-box;margin-bottom:12px;">
-    <button onclick="doLogin()" style="width:100%;background:linear-gradient(135deg,#0D47A1,#1565C0);border:none;color:white;padding:13px;border-radius:10px;font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">ACCEDER</button>
+    <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Code PIN (coachs uniquement)" style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;box-sizing:border-box;margin-bottom:12px;">
+    <button onclick="doLogin()" style="width:100%;background:linear-gradient(135deg,#0D47A1,#1565C0);border:none;color:white;padding:13px;border-radius:10px;font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;letter-spacing:1px;">ACCEDER</button>
   </div>
 </div>
+
 <div id="splash">
   <div class="splash-logo"><img id="splashImg" alt="FTT" src=""></div>
   <div class="splash-title">FTT AGENDA</div>
@@ -538,12 +538,12 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
   </div>
   <button class="fab hidden" id="fab" onclick="onFab()">+</button>
   <nav class="bot-nav">
-    <button class="nav-b active" id="nav-planning" onclick="showTab('planning',this)"><span class="nav-ic">📅</span><span>Planning</span></button>
-    <button class="nav-b" id="nav-coachs" onclick="showTab('coachs',this)"><span class="nav-ic">👨‍🏫</span><span>Coachs</span></button>
-    <button class="nav-b" id="nav-joueurs" onclick="showTab('joueurs',this)"><span class="nav-ic">🎾</span><span>Joueurs</span></button>
-    <button class="nav-b" id="nav-absences" onclick="showTab('absences',this)"><span class="nav-ic">📋</span><span>Absences</span></button>
-    <button class="nav-b" id="nav-competitions" onclick="showTab('competitions',this)"><span class="nav-ic">🏆</span><span>Compét.</span></button>
-    <button class="nav-b" id="nav-stats" onclick="showTab('stats',this)"><span class="nav-ic">📊</span><span>Stats</span></button>
+    <button class="nav-b active" onclick="showTab('planning',this)"><span class="nav-ic">📅</span><span>Planning</span></button>
+    <button class="nav-b" onclick="showTab('coachs',this)"><span class="nav-ic">👨‍🏫</span><span>Coachs</span></button>
+    <button class="nav-b" onclick="showTab('joueurs',this)"><span class="nav-ic">🎾</span><span>Joueurs</span></button>
+    <button class="nav-b" onclick="showTab('absences',this)"><span class="nav-ic">📋</span><span>Absences</span></button>
+    <button class="nav-b" onclick="showTab('competitions',this)"><span class="nav-ic">🏆</span><span>Compét.</span></button>
+    <button class="nav-b" onclick="showTab('stats',this)"><span class="nav-ic">📊</span><span>Stats</span></button>
   </nav>
 </div>
 
@@ -646,7 +646,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
   <div class="modal"><div class="mhandle"></div>
     <div class="mhdr" style="background:linear-gradient(135deg,#0D47A1,#1565C0);">
       <div class="mtitle" style="color:white;">GESTION DES ACCES</div>
-      <button class="mclose" onclick="closeMo('adminMo')" style="color:white;background:rgba(255,255,255,0.2);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;">x</button>
+      <button class="mclose" onclick="closeMo('adminMo')" style="color:white;background:rgba(255,255,255,0.2);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;touch-action:manipulation;">X</button>
     </div>
     <div class="mbody">
       <div id="adminContent"></div>
@@ -657,6 +657,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
     </div>
   </div>
 </div>
+
 <!-- MODALS -->
 <!-- SESSION -->
 <div class="mo" id="sessionMo" onclick="closeOut(event,'sessionMo')">
@@ -859,7 +860,16 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
       <div class="pdf-opt" id="po-p" onclick="selPdf('p')"><div style="font-size:20px;flex-shrink:0;">📅</div><div><div style="font-size:13px;font-weight:600;">Timeline visuelle</div><div style="font-size:11px;color:var(--text-light);">Format timeline jour ou période</div></div></div>
       <div class="fg" id="pdfJGrp" style="margin-top:10px;"><label class="fl">Joueur</label><select class="fs" id="pdfJ"></select></div>
       <div class="frow" style="margin-top:6px;">
-        <div class="fg"><label class="var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
+        <div class="fg"><label class="fl">Du</label><input type="date" class="fi" id="pdfDe"></div>
+        <div class="fg"><label class="fl">Au</label><input type="date" class="fi" id="pdfAu"></div>
+      </div>
+      <button class="btn-p" onclick="genPDF()">📄 Générer PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
 var ADMIN_NOM='Oussama Kassis';
@@ -899,7 +909,7 @@ var SCRIPT_URL='https://script.google.com/macros/s/AKfycbzS_F-JaOVEdgBURZIQgyVWa
 // ===== STATE =====
 var cfg={},em=false,ctab='planning',cview='jour';
 var cDate=new Date(),cAbsDate=new Date(),cSemStart=null,cMoisDate=new Date();
-var D={planning:[],joueurs:[],coachs:[],absences:[],competitions:[],courts:[],msg:{},updatedAt:0};
+var D={planning:[],joueurs:[],coachs:[],absences:[],competitions:[],courts:[],msg:{},updatedAt:0,historique:[]};
 var sType='Tennis',sDur=60,sCoaches=[],sPlayers=[],tmpPlayers=[],picTarget='session';
 var eSession=null,eCoach=null,eComp=null;
 var fCoach='',fCat='';
@@ -933,20 +943,17 @@ var showConflict=()=>{var b=document.getElementById('cflct');b.classList.add('on
 
 // ===== INIT =====
 function _boot(){
+  if(window._booted)return;window._booted=true;
   cfg={demo:true};
-  try{var imgs=document.querySelectorAll('img[alt="FTT"]');for(var i=0;i<imgs.length;i++)imgs[i].src=LOGO;}catch(e){}
-  try{document.getElementById('splash').style.cssText='display:none!important;';}catch(e){}
+  try{var im=document.querySelectorAll('img[alt="FTT"]');for(var i=0;i<im.length;i++)im[i].src=LOGO;}catch(e){}
+  try{var sp=document.getElementById('splash');if(sp)sp.style.display='none';}catch(e){}
   try{startApp();}catch(e){try{loadDemo();renderAll();}catch(e2){}}
   try{document.getElementById('loginLogo').src=LOGO;}catch(e){}
   try{document.getElementById('loginScreen').style.display='flex';}catch(e){}
 }
-document.addEventListener('DOMContentLoaded',function(){setTimeout(_boot,600);});
-window.onload=function(){
-  try{if(document.getElementById('splash').style.display!=='none')setTimeout(_boot,600);}catch(e){setTimeout(_boot,600);}
-};
-setTimeout(function(){
-  try{if(document.getElementById('splash').style.display!=='none')_boot();}catch(e){}
-},4000);
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(_boot,500);});}
+else{setTimeout(_boot,500);}
+setTimeout(_boot,3500);
 function saveConfig(){var id=document.getElementById('setupId').value.trim(),key=document.getElementById('setupKey').value.trim();if(!id||!key){showToast('Remplissez tous les champs','err');return;}cfg={sheetId:id,apiKey:key};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
 function startDemo(){cfg={demo:true};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
 function startApp(){
@@ -959,10 +966,9 @@ function startApp(){
   try{initAutoSync();}catch(e){}
   setStatus('loading','Chargement...');
   loadFromJsonBin().then(function(){
-    try{saveToLocal();}catch(e){}
-    try{renderAll();}catch(e){}
-    setStatus('ok','Synchronisé');
-  }).catch(function(){setStatus('ok','Prêt');});
+    try{saveToLocal();}catch(e){}try{renderAll();}catch(e){}
+    setStatus('ok','Synchronise');
+  }).catch(function(){setStatus('ok','Pret');});
 }
 
 function initAutoSync(){
@@ -1031,7 +1037,7 @@ function toggleMode(){if(!em)document.getElementById('confirmOv').classList.add(
 function closeConfirm(){document.getElementById('confirmOv').classList.remove('open');}
 function confirmEdit(){closeConfirm();setEM(true);}
 function setEM(v){
-  if(v&&currentRole!=="admin"&&currentRole!=="coach"){showToast("Accès refusé","err");return;}
+  if(v&&currentRole!=="admin"&&currentRole!=="coach"){showToast("Acces refuse","err");return;}
   em=v;
   document.getElementById('modeBtn').classList.toggle('edit',v);
   document.getElementById('lockIc').textContent=v?'🔓':'🔒';
@@ -1048,7 +1054,7 @@ function setEM(v){
 
 // ===== TABS =====
 function showTab(n,btn){if(n==='stats')setTimeout(initStats,100);
-  if(currentRole==="invite"&&n!=="planning"){showToast("Mode invité : timeline uniquement","err");return;}
+  if(currentRole==="invite"&&n!=="planning"){return;}
   ctab=n;
   document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.nav-b').forEach(el=>el.classList.remove('active'));
@@ -3056,10 +3062,9 @@ async function saveToSheets(){
 
 // Auto-save après chaque modification importante
 function autoSave(){
-  D.updatedAt=Date.now();
-  try{saveToLocal();}catch(e){}
+  D.updatedAt=Date.now();try{saveToLocal();}catch(e){}
   saveToJsonBin().catch(function(){});
-  setStatus('ok','Sauvegardé ✓');
+  setStatus('ok','Sauvegarde');
 }
 
 function saveToLocal(){
@@ -3104,17 +3109,15 @@ function loadFromLocal(){
   }catch(e){return false;}
 }
 
-
+// ===== JSONBIN =====
 async function saveToJsonBin(){
-  var data={planning:D.planning,joueurs:D.joueurs,coachs:D.coachs,
-    absences:D.absences,competitions:D.competitions,notes:D.notes||{},
+  var data={planning:D.planning,joueurs:D.joueurs,coachs:D.coachs,absences:D.absences,
+    competitions:D.competitions,notes:D.notes||{},historique:D.historique||[],
     acces:{coachs:ACCES_COACHS},updatedAt:D.updatedAt};
   var res=await fetch(JSONBIN_URL,{method:'PUT',
-    headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},
-    body:JSON.stringify(data)});
+    headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},body:JSON.stringify(data)});
   if(!res.ok)throw new Error('JSONBin '+res.status);
 }
-
 async function loadFromJsonBin(){
   var res=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}});
   if(!res.ok)throw new Error('JSONBin '+res.status);
@@ -3127,134 +3130,100 @@ async function loadFromJsonBin(){
     if(data.absences)D.absences=data.absences;
     if(data.competitions)D.competitions=data.competitions;
     if(data.notes)D.notes=data.notes;
+    if(data.historique)D.historique=data.historique;
     if(data.acces&&data.acces.coachs)ACCES_COACHS=data.acces.coachs;
     D.updatedAt=rt;
   }
 }
-
 function saveToLocal(){
-  try{localStorage.setItem('fttData',JSON.stringify({
-    planning:D.planning,joueurs:D.joueurs,coachs:D.coachs,
-    absences:D.absences,competitions:D.competitions,notes:D.notes||{},
-    courts:D.courts||[],msg:D.msg||{},updatedAt:D.updatedAt||0}));
+  try{localStorage.setItem('fttData',JSON.stringify({planning:D.planning,joueurs:D.joueurs,
+    coachs:D.coachs,absences:D.absences,competitions:D.competitions,notes:D.notes||{},
+    historique:D.historique||[],courts:D.courts||[],msg:D.msg||{},updatedAt:D.updatedAt||0}));
   return true;}catch(e){return false;}
 }
-
 function loadFromLocal(){
   try{var raw=localStorage.getItem('fttData');if(!raw)return false;
   var d=JSON.parse(raw);if(!d.planning||!d.planning.length)return false;
   D.planning=d.planning;D.joueurs=d.joueurs||[];D.coachs=d.coachs||[];
   D.absences=d.absences||[];D.competitions=d.competitions||[];
-  D.notes=d.notes||{};D.msg=d.msg||{};D.updatedAt=d.updatedAt||0;
+  D.notes=d.notes||{};D.historique=d.historique||[];D.msg=d.msg||{};D.updatedAt=d.updatedAt||0;
   return true;}catch(e){return false;}
 }
-
 async function saveNow(){
   var btn=document.getElementById('saveBtn');
   if(btn){btn.textContent='...';btn.style.opacity='0.7';}
   D.updatedAt=Date.now();try{saveToLocal();}catch(e){}
-  try{
-    await saveToJsonBin();
-    if(btn){btn.textContent='✅';btn.style.background='var(--green)';btn.style.color='white';}
-    setStatus('ok','Sauvegardé ✓');
-  }catch(e){if(btn){btn.textContent='❌';btn.style.background='var(--red)';btn.style.color='white';}}
+  try{await saveToJsonBin();
+    if(btn){btn.textContent='OK';btn.style.background='var(--green)';btn.style.color='white';}
+    setStatus('ok','Sauvegarde');
+  }catch(e){if(btn){btn.textContent='X';btn.style.background='var(--red)';btn.style.color='white';}}
   setTimeout(function(){if(btn){btn.textContent='SAVE';btn.style.background='var(--yellow)';btn.style.color='var(--text)';btn.style.opacity='1';}},2000);
 }
 
+// ===== LOGIN =====
 function doLogin(){
   var sel=document.getElementById('loginSelect');
   var nom=sel?sel.value:'';
   var pin=document.getElementById('loginPin')?document.getElementById('loginPin').value.trim():'';
-  if(nom==='invite'){currentCoach='Invité';currentRole='invite';em=false;}
+  if(nom==='invite'){currentCoach='Invite';currentRole='invite';em=false;}
   else if(nom){
-    var coach=null;
-    for(var i=0;i<ACCES_COACHS.length;i++){if(ACCES_COACHS[i].nom===nom){coach=ACCES_COACHS[i];break;}}
+    var coach=null;for(var i=0;i<ACCES_COACHS.length;i++){if(ACCES_COACHS[i].nom===nom){coach=ACCES_COACHS[i];break;}}
     if(!coach){showToast('Nom introuvable','err');return;}
     if(pin!==coach.pin){showToast('PIN incorrect','err');var pi=document.getElementById('loginPin');if(pi)pi.value='';return;}
     currentCoach=nom;currentRole=(nom===ADMIN_NOM&&pin===ADMIN_PIN)?'admin':'coach';
   }else{showToast('Choisissez votre nom','err');return;}
   try{document.getElementById('loginScreen').style.display='none';}catch(e){}
-  showToast('Bienvenue '+currentCoach+(currentRole==='admin'?' 👑':currentRole==='coach'?' ✏️':' 👁'),'ok');
+  showToast('Bienvenue '+currentCoach,'ok');
   try{renderAll();}catch(e){}
-  // Délai pour s'assurer que le DOM est rendu
-  setTimeout(function(){
-    try{updateNavForRole();}catch(e){}
-  },100);
+  setTimeout(function(){try{updateNavForRole();}catch(e){}},150);
 }
-
 function updateNavForRole(){
   var isInvite=(currentRole==='invite');
   var isAdmin=(currentRole==='admin');
-
-  // Cacher les onglets nav (boutons) sauf planning pour invité
   var tabs=['coachs','joueurs','absences','competitions','stats'];
   tabs.forEach(function(t){
-    // Chercher le bouton nav par onclick
-    var btns=document.querySelectorAll('button[onclick*="showTab(\''+t+'\')"]');
-    for(var i=0;i<btns.length;i++)btns[i].style.display=isInvite?'none':'';
-    // Cacher le contenu de l'onglet
+    var allBtns=document.querySelectorAll('[onclick]');
+    for(var k=0;k<allBtns.length;k++){var oc=allBtns[k].getAttribute('onclick')||'';if(oc.indexOf("showTab('"+t+"'")>=0)allBtns[k].style.display=isInvite?'none':'';}
     var tab=document.getElementById('tab-'+t);
-    if(tab&&isInvite)tab.style.display='none';
-    else if(tab&&!isInvite)tab.style.display='';
+    if(tab)tab.style.display=isInvite?'none':'';
   });
-
-  // Bouton ADMIN
-  var ab=document.getElementById('adminBtn');
-  if(ab)ab.style.display=isAdmin?'inline-block':'none';
-
-  // Bouton SAVE
-  var sb=document.getElementById('saveBtn');
-  if(sb)sb.style.display=isInvite?'none':'';
-
-  // Bouton mode édition
-  var mb=document.getElementById('modeBtn');
-  if(mb)mb.style.display=isInvite?'none':'';
-
-  // Si invité, forcer la tab planning
+  var ab=document.getElementById('adminBtn');if(ab)ab.style.display=isAdmin?'inline-block':'none';
+  var sb=document.getElementById('saveBtn');if(sb)sb.style.display=isInvite?'none':'';
+  var mb=document.getElementById('modeBtn');if(mb)mb.style.display=isInvite?'none':'';
   if(isInvite){try{showTab('planning');}catch(e){}}
 }
 
+// ===== ADMIN =====
 function openAdmin(){
-  if(currentRole!=='admin'){showToast('Accès réservé admin','err');return;}
+  if(currentRole!=='admin'){showToast('Reserve admin','err');return;}
   renderAdminPanel();openMo('adminMo');
 }
-
 function renderAdminPanel(){
   var el=document.getElementById('adminContent');if(!el)return;
-  var h='<div style="font-family:Barlow Condensed,sans-serif;font-size:14px;font-weight:800;color:#1565C0;margin-bottom:10px;">COACHS ET CODES PIN</div>';
-  ACCES_COACHS.forEach(function(c,i){
+  var h='<div style="font-family:Barlow Condensed,sans-serif;font-size:14px;font-weight:800;color:#1565C0;margin-bottom:10px;letter-spacing:1px;">COACHS ET CODES PIN</div>';
+  for(var i=0;i<ACCES_COACHS.length;i++){
+    var c=ACCES_COACHS[i];
     h+='<div style="display:flex;gap:5px;margin-bottom:6px;">'
      +'<input id="cn_'+i+'" value="'+c.nom+'" style="flex:2;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:13px;">'
      +'<input id="cp_'+i+'" value="'+c.pin+'" maxlength="4" inputmode="numeric" placeholder="PIN" style="flex:1;padding:8px;border:1px solid #ccc;border-radius:8px;font-size:13px;text-align:center;">'
-     +'<button onclick="rmCoach('+i+')" style="background:#E53935;border:none;color:white;width:32px;border-radius:8px;cursor:pointer;font-size:14px;touch-action:manipulation;">✕</button>'
+     +'<button onclick="rmCoach('+i+')" style="background:#E53935;border:none;color:white;width:32px;border-radius:8px;cursor:pointer;font-size:14px;touch-action:manipulation;">X</button>'
      +'</div>';
-  });
-  h+='<button onclick="addCoach()" style="width:100%;background:#E3F2FD;border:2px dashed #1565C0;color:#1565C0;padding:8px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;">+ Ajouter un coach</button>';
+  }
+  h+='<button onclick="addCoach()" style="width:100%;background:#E3F2FD;border:2px dashed #1565C0;color:#1565C0;padding:8px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:4px;">+ Ajouter un coach</button>';
   el.innerHTML=h;
 }
-
 function saveAdmin(){
   var nc=[];
-  for(var i=0;i<ACCES_COACHS.length;i++){
-    var n=document.getElementById('cn_'+i);
-    var p=document.getElementById('cp_'+i);
-    if(n&&n.value.trim())nc.push({nom:n.value.trim(),pin:p?p.value.trim():''});
-  }
+  for(var i=0;i<ACCES_COACHS.length;i++){var n=document.getElementById('cn_'+i),p=document.getElementById('cp_'+i);if(n&&n.value.trim())nc.push({nom:n.value.trim(),pin:p?p.value.trim():''});}
   ACCES_COACHS=nc;D.updatedAt=Date.now();
-  saveToJsonBin().then(function(){showToast('Accès sauvegardés ✓','ok');}).catch(function(){showToast('Erreur','err');});
+  saveToJsonBin().then(function(){showToast('Acces sauvegardes','ok');}).catch(function(){showToast('Erreur','err');});
   try{saveToLocal();}catch(e){}
   closeMo('adminMo');
 }
-
 function addCoach(){ACCES_COACHS.push({nom:'Nouveau coach',pin:'0000'});renderAdminPanel();}
 function rmCoach(i){ACCES_COACHS.splice(i,1);renderAdminPanel();}
-ardés ✓','ok');}).catch(function(){showToast('Erreur','err');});
-  try{saveToLocal();}catch(e){}
-  closeMo('adminMo');
-}
+function addHistorique(a,d){if(!D.historique)D.historique=[];D.historique.unshift({ts:Date.now(),date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),action:a,detail:d||''});if(D.historique.length>50)D.historique=D.historique.slice(0,50);}
 
-function addCoach(){ACCES_COACHS.push({nom:'Nouveau coach',pin:'0000'});renderAdminPanel();}
-function rmCoach(i){ACCES_COACHS.splice(i,1);renderAdminPanel();}
 </script>
 
 <!-- Hidden filter elements (kept for JS compatibility) -->
