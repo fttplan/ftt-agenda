@@ -330,31 +330,17 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
 <div id="loginScreen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0D47A1,#1565C0 60%,#E53935);z-index:10000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
   <img id="loginLogo" alt="FTT" style="width:80px;height:80px;object-fit:contain;background:white;border-radius:20px;padding:8px;margin-bottom:14px;box-shadow:0 8px 24px rgba(0,0,0,0.3);">
   <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:900;color:white;letter-spacing:3px;margin-bottom:2px;">FTT AGENDA</div>
-  <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:20px;">VERSION 1.1</div>
-  <div style="background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(0,0,0,0.3);">
-    <div style="font-size:12px;color:#999;margin-bottom:10px;text-align:center;font-weight:600;">QUI ETES-VOUS ?</div>
-    <select id="loginSelect" style="width:100%;padding:12px;border:2px solid #1565C0;border-radius:10px;font-size:15px;color:#0D47A1;background:white;margin-bottom:10px;box-sizing:border-box;">
-      <option value="">-- Choisir --</option>
-      <optgroup label="Coachs (PIN requis)">
-        <option value="Moez Hachaichi">Moez Hachaichi</option>
-        <option value="Fares Zaier">Fares Zaier</option>
-        <option value="Ahmed Noamen">Ahmed Noamen</option>
-        <option value="Omar laabidi">Omar laabidi</option>
-        <option value="Seif Ben Slimene">Seif Ben Slimene</option>
-        <option value="Ameur ben hassan">Ameur ben hassan</option>
-        <option value="Achraf Omrane">Achraf Omrane</option>
-        <option value="Oussama Kassis">Oussama Kassis</option>
-        <option value="Nadia Charfi">Nadia Charfi</option>
-        <option value="Ines Zribi">Ines Zribi</option>
-        <option value="Sami Trabelsi">Sami Trabelsi</option>
-        <option value="Ahmed Ben Ali">Ahmed Ben Ali</option>
-      </optgroup>
-      <optgroup label="Acces libre">
-        <option value="invite">Invite - consultation uniquement</option>
-      </optgroup>
-    </select>
-    <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Code PIN (coachs uniquement)" style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;box-sizing:border-box;margin-bottom:12px;">
-    <button onclick="doLogin()" style="width:100%;background:linear-gradient(135deg,#0D47A1,#1565C0);border:none;color:white;padding:13px;border-radius:10px;font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;letter-spacing:1px;">ACCEDER</button>
+  <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:24px;">VERSION 1.1</div>
+  <div style="background:white;border-radius:20px;padding:24px;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(0,0,0,0.3);">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#0D47A1;margin-bottom:16px;text-align:center;letter-spacing:1px;">CONNEXION</div>
+    <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Entrez votre code PIN" onkeydown="if(event.keyCode===13)doLoginPin()" style="width:100%;padding:13px;border:2px solid #1565C0;border-radius:10px;font-size:20px;text-align:center;letter-spacing:8px;box-sizing:border-box;margin-bottom:10px;">
+    <button onclick="doLoginPin()" style="width:100%;background:linear-gradient(135deg,#0D47A1,#1565C0);border:none;color:white;padding:14px;border-radius:10px;font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;letter-spacing:1px;margin-bottom:14px;">SE CONNECTER</button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+      <div style="flex:1;height:1px;background:#E0E0E0;"></div>
+      <div style="font-size:11px;color:#999;">OU</div>
+      <div style="flex:1;height:1px;background:#E0E0E0;"></div>
+    </div>
+    <button onclick="doLoginInvite()" style="width:100%;background:#F5F5F5;border:1px solid #DDD;color:#555;padding:12px;border-radius:10px;font-size:14px;font-family:'Barlow Condensed',sans-serif;font-weight:700;cursor:pointer;touch-action:manipulation;letter-spacing:0.5px;">👁 ACCÈS INVITÉ (consultation)</button>
   </div>
 </div>
 
@@ -1097,11 +1083,24 @@ function initPinch(){
 
 // ===== MESSAGE =====
 function renderMsg(){
-  var date=fd(cDate),msg=D.msg[date]||'';
+  var date=fd(cDate),m=D.msg[date];
   var el=document.getElementById('msgTxt');
-  el.textContent=msg||'Aucun message du jour';el.className='msg-text'+(msg?'':' empty');
+  if(!m){el.textContent='Aucun message du jour';el.className='msg-text empty';return;}
+  // Compatibilité: ancien format string
+  var txt=(typeof m==='string')?m:m.texte;
+  var auteur=(typeof m==='object'&&m.auteur)?m.auteur:'';
+  if(!txt){el.textContent='Aucun message du jour';el.className='msg-text empty';return;}
+  el.className='msg-text';
+  el.innerHTML=txt.replace(/</g,'&lt;')+(auteur?'<div style="margin-top:6px;font-size:11px;color:#1565C0;font-weight:600;">— '+auteur+'</div>':'');
 }
-function saveMsg(){D.msg[fd(cDate)]=document.getElementById('msgInput').value.trim();renderMsg();closeMo('messageMo');showToast('Message publié ✓','ok');}
+function saveMsg(){
+  var txt=document.getElementById('msgInput').value.trim();
+  D.msg[fd(cDate)]={texte:txt,auteur:currentCoach||'Coach',ts:Date.now()};
+  D.updatedAt=Date.now();
+  try{saveToLocal();}catch(e){}
+  saveToJsonBin().catch(function(){});
+  renderMsg();closeMo('messageMo');showToast('Message publié ✓','ok');
+}
 
 // ===== FILTRES =====
 function updFiltres(){
@@ -1130,6 +1129,7 @@ function hasConflict(name,hd,dur,excl=null){
 // ===== CONTEXT MENU =====
 var ctxVisible=false;
 function showCtx(e,id){
+  if(currentRole==='invite')return;
   e.preventDefault();e.stopPropagation();
   ctxId=id;ctxVisible=true;
   var m=document.getElementById('ctxMenu');
@@ -1173,6 +1173,7 @@ function ctxDo(a){var id=ctxId;hideCtx();if(!id)return;
   else if(a==='delete'){if(confirm('Supprimer cette séance ?'))delSes(id);}
 }
 function openHeureMo(id){
+  if(currentRole==='invite')return;
   heureSessionId=id; // stocké séparément, indépendant de ctxId
   var s=D.planning.find(p=>p.id===id);if(!s)return;
   var coachsStr=s.coachs&&s.coachs.length?s.coachs.map(pini).join(', '):'Coach non assigné';
@@ -1509,6 +1510,7 @@ function fillSlots(selId,def='09:00'){
   sel.value=def;
 }
 function openSesModal(id){
+  if(currentRole==='invite')return;
   eSession=id;sPlayers=[];sCoaches=[];sType='Tennis';sDur=60;
   document.getElementById('sesTitle').textContent=id?'Modifier Séance':'Nouvelle Séance';
   fillSlots('sStart','09:00');
@@ -3062,9 +3064,13 @@ async function saveToSheets(){
 
 // Auto-save après chaque modification importante
 function autoSave(){
-  D.updatedAt=Date.now();try{saveToLocal();}catch(e){}
-  saveToJsonBin().catch(function(){});
-  setStatus('ok','Sauvegarde');
+  D.updatedAt=Date.now();
+  try{saveToLocal();}catch(e){}
+  saveToJsonBin().then(function(){
+    setStatus('ok','Enregistré ✓ '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
+  }).catch(function(){
+    setStatus('ok','Enregistré localement');
+  });
 }
 
 function saveToLocal(){
@@ -3161,22 +3167,31 @@ async function saveNow(){
 }
 
 // ===== LOGIN =====
-function doLogin(){
-  var sel=document.getElementById('loginSelect');
-  var nom=sel?sel.value:'';
+function doLoginPin(){
   var pin=document.getElementById('loginPin')?document.getElementById('loginPin').value.trim():'';
-  if(nom==='invite'){currentCoach='Invite';currentRole='invite';em=false;}
-  else if(nom){
-    var coach=null;for(var i=0;i<ACCES_COACHS.length;i++){if(ACCES_COACHS[i].nom===nom){coach=ACCES_COACHS[i];break;}}
-    if(!coach){showToast('Nom introuvable','err');return;}
-    if(pin!==coach.pin){showToast('PIN incorrect','err');var pi=document.getElementById('loginPin');if(pi)pi.value='';return;}
-    currentCoach=nom;currentRole=(nom===ADMIN_NOM&&pin===ADMIN_PIN)?'admin':'coach';
-  }else{showToast('Choisissez votre nom','err');return;}
+  if(!pin){showToast('Entrez votre PIN','err');return;}
+  var coach=null;
+  for(var i=0;i<ACCES_COACHS.length;i++){if(ACCES_COACHS[i].pin===pin){coach=ACCES_COACHS[i];break;}}
+  if(!coach){
+    showToast('PIN incorrect','err');
+    var pi=document.getElementById('loginPin');if(pi){pi.value='';pi.style.borderColor='red';}
+    return;
+  }
+  currentCoach=coach.nom;
+  currentRole=(coach.nom===ADMIN_NOM&&pin===ADMIN_PIN)?'admin':'coach';
   try{document.getElementById('loginScreen').style.display='none';}catch(e){}
-  showToast('Bienvenue '+currentCoach,'ok');
+  showToast('Bienvenue '+coach.nom,'ok');
   try{renderAll();}catch(e){}
   setTimeout(function(){try{updateNavForRole();}catch(e){}},150);
 }
+function doLoginInvite(){
+  currentCoach='Invité';currentRole='invite';em=false;
+  try{document.getElementById('loginScreen').style.display='none';}catch(e){}
+  showToast('Mode consultation','ok');
+  try{renderAll();}catch(e){}
+  setTimeout(function(){try{updateNavForRole();}catch(e){}},150);
+}
+
 function updateNavForRole(){
   var isInvite=(currentRole==='invite');
   var isAdmin=(currentRole==='admin');
@@ -3224,6 +3239,19 @@ function addCoach(){ACCES_COACHS.push({nom:'Nouveau coach',pin:'0000'});renderAd
 function rmCoach(i){ACCES_COACHS.splice(i,1);renderAdminPanel();}
 function addHistorique(a,d){if(!D.historique)D.historique=[];D.historique.unshift({ts:Date.now(),date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),action:a,detail:d||''});if(D.historique.length>50)D.historique=D.historique.slice(0,50);}
 
+
+// Rafraîchissement périodique pour voir les MAJ des autres (lecture seule)
+var _refreshTimer=setInterval(function(){
+  if(em)return; // ne pas rafraîchir pendant l'édition
+  var tsAvant=D.updatedAt||0;
+  loadFromJsonBin().then(function(){
+    if((D.updatedAt||0)>tsAvant){
+      try{saveToLocal();}catch(e){}
+      try{renderAll();}catch(e){}
+      showToast('📲 Planning mis à jour','ok');
+    }
+  }).catch(function(){});
+},60000);
 </script>
 
 <!-- Hidden filter elements (kept for JS compatibility) -->
