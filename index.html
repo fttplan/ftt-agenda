@@ -3169,6 +3169,26 @@ async function saveNow(){
 function doLoginPin(){
   var pin=document.getElementById('loginPin')?document.getElementById('loginPin').value.trim():'';
   if(!pin){showToast('Entrez votre PIN','err');return;}
+  // Le PIN admin donne TOUJOURS accès admin (fixe, indépendant de la liste)
+  if(pin===ADMIN_PIN){
+    currentCoach=ADMIN_NOM;
+    currentRole='admin';
+    try{document.getElementById('loginScreen').style.display='none';}catch(e){}
+    showToast('Bienvenue '+ADMIN_NOM+' 👑','ok');
+    try{renderAll();}catch(e){}
+    var ab=document.getElementById('adminBtn');
+    if(ab)ab.style.display='inline-block';
+    try{updateNavForRole();}catch(e){}
+    setTimeout(function(){
+      try{
+        var ab2=document.getElementById('adminBtn');
+        if(ab2)ab2.style.display='inline-block';
+        updateNavForRole();
+      }catch(e){}
+    },400);
+    return;
+  }
+  // Sinon chercher coach normal
   var coach=null;
   for(var i=0;i<ACCES_COACHS.length;i++){if(ACCES_COACHS[i].pin===pin){coach=ACCES_COACHS[i];break;}}
   if(!coach){
@@ -3177,15 +3197,10 @@ function doLoginPin(){
     return;
   }
   currentCoach=coach.nom;
-  currentRole=(coach.pin===ADMIN_PIN)?'admin':'coach';
+  currentRole='coach';
   try{document.getElementById('loginScreen').style.display='none';}catch(e){}
-  showToast('Bienvenue '+coach.nom+(currentRole==='admin'?' 👑':''),'ok');
+  showToast('Bienvenue '+coach.nom,'ok');
   try{renderAll();}catch(e){}
-  // Afficher bouton admin immédiatement + après délai (double sécurité)
-  if(currentRole==='admin'){
-    var ab=document.getElementById('adminBtn');
-    if(ab)ab.style.display='inline-block';
-  }
   try{updateNavForRole();}catch(e){}
   setTimeout(function(){try{updateNavForRole();}catch(e){}},300);
 }
