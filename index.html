@@ -3187,17 +3187,35 @@ function doLogin(){
 }
 
 function updateNavForRole(){
-  var tabs=['coachs','joueurs','absences','competitions','stats','msg'];
+  var isInvite=(currentRole==='invite');
+  var isAdmin=(currentRole==='admin');
+
+  // Cacher les onglets nav (boutons) sauf planning pour invité
+  var tabs=['coachs','joueurs','absences','competitions','stats'];
   tabs.forEach(function(t){
-    var b=document.getElementById('nav-'+t);
-    if(b)b.style.display=(currentRole==='invite')?'none':'flex';
+    // Chercher le bouton nav par onclick
+    var btns=document.querySelectorAll('button[onclick*="showTab(\''+t+'\')"]');
+    for(var i=0;i<btns.length;i++)btns[i].style.display=isInvite?'none':'';
+    // Cacher le contenu de l'onglet
+    var tab=document.getElementById('tab-'+t);
+    if(tab&&isInvite)tab.style.display='none';
+    else if(tab&&!isInvite)tab.style.display='';
   });
+
+  // Bouton ADMIN
   var ab=document.getElementById('adminBtn');
-  if(ab)ab.style.display=(currentRole==='admin')?'inline-block':'none';
+  if(ab)ab.style.display=isAdmin?'inline-block':'none';
+
+  // Bouton SAVE
   var sb=document.getElementById('saveBtn');
-  if(sb)sb.style.display=(currentRole==='invite')?'none':'inline-block';
+  if(sb)sb.style.display=isInvite?'none':'';
+
+  // Bouton mode édition
   var mb=document.getElementById('modeBtn');
-  if(mb)mb.style.display=(currentRole==='invite')?'none':'flex';
+  if(mb)mb.style.display=isInvite?'none':'';
+
+  // Si invité, forcer la tab planning
+  if(isInvite){try{showTab('planning');}catch(e){}}
 }
 
 function openAdmin(){
