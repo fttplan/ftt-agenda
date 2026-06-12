@@ -540,8 +540,8 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
     <button class="nav-b" onclick="showTab('coachs',this)"><span class="nav-ic">👨‍🏫</span><span>Coachs</span></button>
     <button class="nav-b" onclick="showTab('joueurs',this)"><span class="nav-ic">🎾</span><span>Joueurs</span></button>
     <button class="nav-b" onclick="showTab('absences',this)"><span class="nav-ic">📋</span><span>Absences</span></button>
-    <button class="nav-b" onclick="showTab('competitions',this)"><span class="nav-ic">🏆</span><span>Compét.</span></button>
-    <button class="nav-b" onclick="showTab('stats',this)"><span class="nav-ic">📊</span><span>Stats</span></button>
+    <button class="nav-b" id="nav-competitions" onclick="showTab('competitions',this)"><span class="nav-ic">🏆</span><span>Compét.</span></button>
+    <button class="nav-b" id="nav-stats" onclick="showTab('stats',this)"><span class="nav-ic">📊</span><span>Stats</span></button>
   </nav>
 </div>
 
@@ -860,12 +860,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
         <div class="fg"><label class="fl">Du</label><input type="date" class="fi" id="pdfDe"></div>
         <div class="fg"><label class="fl">Au</label><input type="date" class="fi" id="pdfAu"></div>
       </div>
-      <button class="btn-p" onclick="genPDF()">📄 Générer PDF</button>
-    </div>
-  </div>
-</div>
-
-<script>var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
+      <button class="btn-p" onclick="genPDF()">📄 Générer PDF</button>var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
 var ADMIN_NOM='Oussama Kassis';
@@ -5466,7 +5461,7 @@ function doLogin(){
   try{updateNavForRole();}catch(e){}
 }
 function updateNavForRole(){
-  var tabs=['coachs','joueurs','abs','comps','stats','msg'];
+  var tabs=['coachs','joueurs','absences','competitions','stats','msg','historique'];
   tabs.forEach(function(t){var b=document.getElementById('nav-'+t);if(b)b.style.display=(currentRole==='invite')?'none':'flex';});
   var ab=document.getElementById('adminBtn');if(ab)ab.style.display=(currentRole==='admin')?'inline-block':'none';
   var sb=document.getElementById('saveBtn');if(sb)sb.style.display=(currentRole==='invite')?'none':'inline-block';
@@ -5500,6 +5495,7 @@ function saveAdmin(){
 function addCoach(){ACCES_COACHS.push({nom:'Nouveau coach',pin:'0000'});renderAdminPanel();}
 function rmCoach(i){ACCES_COACHS.splice(i,1);renderAdminPanel();}
 function addHistorique(a,d){if(!D.historique)D.historique=[];D.historique.unshift({ts:Date.now(),date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),action:a,detail:d||''});if(D.historique.length>50)D.historique=D.historique.slice(0,50);}
+istorique=D.historique.slice(0,50);}
 </script>
 
 <!-- Hidden filter elements (kept for JS compatibility) -->
