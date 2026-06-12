@@ -358,9 +358,9 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
         <option value="__L__Lecteur 5">Lecteur 5</option>
       </optgroup>
     </select>
-    <div id="pinSection" style="display:none;margin-bottom:12px;">
-      <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="Code PIN (4 chiffres)"
-        style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:20px;text-align:center;letter-spacing:6px;box-sizing:border-box;">
+    <div style="margin-bottom:12px;">
+      <input type="password" id="loginPin" inputmode="numeric" maxlength="4" placeholder="PIN (laisser vide si consultation)"
+        style="width:100%;padding:11px;border:2px solid #1565C0;border-radius:10px;font-size:18px;text-align:center;letter-spacing:6px;box-sizing:border-box;">
     </div>
     <button onclick="doLogin()" style="width:100%;background:#1565C0;border:none;color:white;padding:13px;border-radius:10px;font-size:16px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;letter-spacing:1px;">ACCÉDER →</button>
   </div>
@@ -3270,50 +3270,29 @@ function doLogin(){
   var sel=document.getElementById('loginSelect');
   var nom=sel?sel.value:'';
   if(!nom){showToast('Choisissez votre nom','err');return;}
+  var pin=document.getElementById('loginPin')?document.getElementById('loginPin').value.trim():'';
 
   if(nom.indexOf('__L__')===0){
-    // Lecteur — accès direct sans PIN
     currentCoach=nom.substring(5);
     currentRole='lecteur';
     em=false;
   }else{
-    // Éditeur — vérifier PIN
     var editeur=null;
     for(var i=0;i<ACCES_EDITEURS.length;i++){
       if(ACCES_EDITEURS[i].nom===nom){editeur=ACCES_EDITEURS[i];break;}
     }
-    if(!editeur){
-      // Nom pas dans la liste — accès lecteur
-      currentCoach=nom;
-      currentRole='lecteur';
-      em=false;
-    }else{
-      var pinEl=document.getElementById('pinSection');
-      var isVisible=pinEl&&pinEl.style.display!=='none';
-      if(!isVisible){
-        // PIN pas encore affiché — l'afficher d'abord
-        if(pinEl)pinEl.style.display='block';
-        var pi=document.getElementById('loginPin');
-        if(pi){pi.value='';pi.focus();}
-        showToast('Entrez votre PIN','ok');
-        return;
-      }
-      var pin=document.getElementById('loginPin')?document.getElementById('loginPin').value:'';
-      if(pin!==editeur.pin){
-        showToast('PIN incorrect ❌','err');
-        var pi2=document.getElementById('loginPin');
-        if(pi2){pi2.value='';pi2.style.borderColor='red';}
-        return;
-      }
-      currentCoach=nom;
-      currentRole=(nom===ADMIN_NOM)?'admin':'editeur';
+    if(!editeur||pin!==editeur.pin){
+      showToast('PIN incorrect','err');
+      var pi=document.getElementById('loginPin');
+      if(pi)pi.value='';
+      return;
     }
+    currentCoach=nom;
+    currentRole=(nom===ADMIN_NOM)?'admin':'editeur';
   }
 
-  // Connexion réussie
   var ls=document.getElementById('loginScreen');
   if(ls)ls.style.display='none';
-  setStatus('ok','Connecté: '+currentCoach);
   showToast('Bienvenue '+currentCoach+(currentRole==='admin'?' 👑':currentRole==='editeur'?' ✏️':' 👁'),'ok');
   try{renderAll();}catch(e){}
   try{
