@@ -38,7 +38,7 @@ body{font-family:'Barlow',sans-serif;background:var(--gray-light);color:var(--te
 
 /* SPLASH */
 #splash{position:fixed;inset:0;background:var(--blue);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.6s;}
-#splash.hidden{opacity:0;pointer-events:none;visibility:hidden;display:none!important;}
+#splash.hidden{opacity:0;pointer-events:none;visibility:hidden;}
 .splash-logo{width:100px;height:100px;background:white;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 8px 40px rgba(0,0,0,0.25);overflow:hidden;}
 .splash-logo img{width:100%;height:100%;object-fit:contain;padding:8px;}
 .splash-title{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:800;color:white;letter-spacing:4px;margin-bottom:4px;}
@@ -67,9 +67,9 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
 .mode-badge.edit{background:#FEF9E7;color:var(--yellow-dark);}
 
 /* NAV */
-.bot-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:3px solid #1565C0;display:flex;z-index:200;box-shadow:0 -4px 20px rgba(13,71,161,0.15);padding-bottom:env(safe-area-inset-bottom,0);}
+.bot-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--gray-mid);display:flex;z-index:200;box-shadow:0 -2px 8px rgba(0,0,0,0.07);padding-bottom:env(safe-area-inset-bottom,0);}
 .nav-b{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 2px;background:none;border:none;cursor:pointer;color:var(--text-light);font-size:10px;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;gap:2px;}
-.nav-b.active{color:var(--blue);background:var(--blue-pale);border-radius:12px;}
+.nav-b.active{color:var(--blue);}
 .nav-ic{font-size:18px;line-height:1;}
 
 /* FAB */
@@ -245,8 +245,8 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 
 .type-btns,.dur-btns{display:flex;gap:7px;}
-.tbtn,.dbtn{flex:1;padding:10px 8px;border:2px solid var(--gray-mid);border-radius:var(--rs);background:white;cursor:pointer;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--text-mid);touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:48px;box-shadow:0 2px 6px rgba(0,0,0,0.06);transition:all 0.15s;}
-.tbtn.sel,.dbtn.sel{border-color:var(--blue);background:linear-gradient(135deg,var(--blue) 0%,var(--blue-light) 100%);color:white;box-shadow:0 4px 12px rgba(21,101,192,0.35);}
+.tbtn,.dbtn{flex:1;padding:8px;border:2px solid var(--gray-mid);border-radius:var(--rs);background:var(--gray-light);cursor:pointer;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--text-mid);touch-action:manipulation;-webkit-tap-highlight-color:transparent;min-height:44px;}
+.tbtn.sel,.dbtn.sel{border-color:var(--blue);background:var(--blue-pale);color:var(--blue);}
 .tbtn span,.dbtn span{display:block;font-size:9px;font-family:'Barlow',sans-serif;font-weight:400;opacity:0.7;margin-top:1px;}
 
 .fin-box{background:var(--blue-pale);border-radius:var(--rs);padding:8px 10px;font-size:14px;color:var(--blue);font-family:'Barlow Semi Condensed',sans-serif;font-weight:700;}
@@ -267,7 +267,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
 .copt{padding:5px 11px;border:1px solid var(--gray-mid);border-radius:12px;background:var(--gray-light);cursor:pointer;font-size:12px;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;color:var(--text-mid);}
 .copt.sel{background:var(--blue);color:white;border-color:var(--blue);}
 
-.btn-p{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-light) 100%);border:none;color:white;padding:13px;border-radius:var(--rs);font-size:15px;font-family:'Barlow Semi Condensed',sans-serif;font-weight:700;cursor:pointer;width:100%;touch-action:manipulation;box-shadow:0 4px 12px rgba(21,101,192,0.4);letter-spacing:0.5px;}
+.btn-p{background:var(--blue);border:none;color:white;padding:11px;border-radius:var(--rs);font-size:14px;font-family:'Barlow Semi Condensed',sans-serif;font-weight:700;cursor:pointer;width:100%;touch-action:manipulation;}
 .btn-s{background:var(--gray-light);border:1px solid var(--gray-mid);color:var(--text-mid);padding:10px;border-radius:var(--rs);font-size:14px;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;cursor:pointer;width:100%;touch-action:manipulation;}
 .brow{display:flex;gap:7px;}.brow>*{flex:1;}
 .bsm{padding:5px 9px;border-radius:var(--rs);font-size:11px;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:3px;}
@@ -309,18 +309,33 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
 </style>
 </head>
 <body>
-<!-- ÉCRAN CHOIX COACH -->
-<div id="loginScreen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0D47A1 0%,#1565C0 50%,#E53935 100%);z-index:10000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
+
+<!-- OVERLAYS -->
+<div class="toast" id="toast"></div>
+<div class="conflict-banner" id="cflct">⚠ Conflit horaire — joueur déjà planifié sur ce créneau</div>
+<div class="sync-ring" id="syncRing"></div>
+<div class="ctx-menu" id="ctxMenu">
+  <div class="ctx-item" id="ctxEdit" onclick="ctxDo('edit')">✏ Modifier la séance</div>
+  <div class="ctx-item" id="ctxHeure" onclick="ctxDo('heure')">🕐 Modifier l'horaire</div>
+  <div class="ctx-item" id="ctxCopyDay" onclick="ctxDo('copyDay')">📋 Copier vers un autre jour</div>
+  <div class="ctx-item" id="ctxAbsence" onclick="ctxDo('absence')">⚠ Saisir une absence</div>
+  <div class="ctx-item" id="ctxPhysAvant" onclick="ctxDo('physAvant')">💪 Ajouter Physique 1h avant</div>
+  <div class="ctx-item" id="ctxPhysApres" onclick="ctxDo('physApres')">💪 Ajouter Physique 1h après</div>
+  <div class="ctx-item" id="ctxNote" onclick="ctxDo('note')">⭐ Notes d'engagement</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item danger" id="ctxDelete" onclick="ctxDo('delete')">✕ Supprimer</div>
+</div>
+
+<!-- SPLASH -->
+
+<!-- ÉCRAN LOGIN COACH -->
+<div id="loginScreen" style="position:fixed;inset:0;background:linear-gradient(135deg,#0D47A1,#1565C0 60%,#E53935);z-index:10000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;">
   <img id="loginLogo" alt="FTT" style="width:80px;height:80px;object-fit:contain;background:white;border-radius:20px;padding:8px;margin-bottom:16px;box-shadow:0 8px 24px rgba(0,0,0,0.3);">
   <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:white;letter-spacing:3px;margin-bottom:4px;">FTT AGENDA</div>
-  <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:32px;letter-spacing:1px;">VERSION 1.1</div>
-  <div style="background:white;border-radius:20px;padding:24px;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(0,0,0,0.3);">
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#0D47A1;margin-bottom:16px;text-align:center;letter-spacing:1px;">👋 QUI ÊTES-VOUS ?</div>
-    <div id="coachList" style="display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;"></div>
-    <div style="margin-top:12px;border-top:1px solid #EEE;padding-top:12px;">
-      <div style="font-size:12px;color:#999;margin-bottom:6px;text-align:center;">Autre / Visiteur</div>
-      <button onclick="loginCoach(null)" style="width:100%;background:#F5F5F5;border:1px solid #DDD;color:#666;padding:10px;border-radius:10px;font-size:13px;font-family:'Barlow Semi Condensed',sans-serif;font-weight:600;cursor:pointer;touch-action:manipulation;">👁 Mode consultation uniquement</button>
-    </div>
+  <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:24px;">Qui êtes-vous ?</div>
+  <div style="background:white;border-radius:20px;padding:20px;width:100%;max-width:340px;box-shadow:0 16px 48px rgba(0,0,0,0.3);">
+    <div id="coachList"></div>
+    <button onclick="loginCoach(null)" style="width:100%;background:#F5F5F5;border:1px solid #DDD;color:#666;padding:10px;border-radius:10px;font-size:13px;cursor:pointer;margin-top:8px;touch-action:manipulation;">👁 Mode consultation</button>
   </div>
 </div>
 
@@ -406,6 +421,12 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
           <input type="date" id="datePick" style="position:absolute;opacity:0;pointer-events:none;" onchange="onDatePick()">
           <button class="dnav-btn" onclick="chDate(1)">›</button>
           <button class="today-btn" onclick="goToday()">AUJOURD'HUI</button>
+        </div>
+        <!-- BARRE EDITION FIXE -->
+        <div id="editModeBar" style="display:flex;align-items:center;gap:8px;padding:6px 12px;background:white;border-top:1px solid var(--gray-mid);">
+          <span id="coachNameBar" style="font-size:12px;color:var(--text-light);font-family:'Barlow Semi Condensed',sans-serif;flex:1;">👤 Visiteur</span>
+          <button id="editModeBtn" onclick="toggleEditMode()" style="background:linear-gradient(135deg,#0D47A1,#1565C0);border:none;color:white;padding:7px 14px;border-radius:8px;font-size:12px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">✏️ MODIFIER</button>
+          <button onclick="logoutCoach()" style="background:var(--gray-light);border:1px solid var(--gray-mid);color:var(--text-mid);padding:7px 8px;border-radius:8px;font-size:11px;cursor:pointer;touch-action:manipulation;" title="Changer de coach">🔄</button>
         </div>
         <div class="copy-bar" id="copyBar">
           <span id="copyBarTxt">📋 Séance copiée</span>
@@ -793,8 +814,31 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
     <div class="mhdr"><div class="mtitle">Message du Jour</div><button class="mclose" onclick="closeMo('messageMo')">✕</button></div>
     <div class="mbody">
       <div class="fg"><label class="fl">Message visible par tous les coachs</label><textarea class="ft" id="msgInput" style="min-height:80px;"></textarea></div>
-      <div class="brow"><button class="btn-s" onclick="closeMo('messageMo')">Annuler</button><button class="btn-p" onclick="saveMsg()">Publier</button></di<script>
-// === Polyfill pour Safari iOS < 14 ===
+      <div class="brow"><button class="btn-s" onclick="closeMo('messageMo')">Annuler</button><button class="btn-p" onclick="saveMsg()">Publier</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- PDF MODAL -->
+<div class="mo" id="pdfMo" onclick="closeOut(event,'pdfMo')">
+  <div class="modal">
+    <div class="mhandle"></div>
+    <div class="mhdr"><div class="mtitle">Exporter PDF</div><button class="mclose" onclick="closeMo('pdfMo')">✕</button></div>
+    <div class="mbody">
+      <div class="pdf-opt sel" id="po-i" onclick="selPdf('i')"><div style="font-size:20px;flex-shrink:0;">👤</div><div><div style="font-size:13px;font-weight:600;">Fiche individuelle</div><div style="font-size:11px;color:var(--text-light);">Planning + absences + stats</div></div></div>
+      <div class="pdf-opt" id="po-g" onclick="selPdf('g')"><div style="font-size:20px;flex-shrink:0;">👥</div><div><div style="font-size:13px;font-weight:600;">Rapport de groupe</div><div style="font-size:11px;color:var(--text-light);">Récap tous joueurs</div></div></div>
+      <div class="pdf-opt" id="po-p" onclick="selPdf('p')"><div style="font-size:20px;flex-shrink:0;">📅</div><div><div style="font-size:13px;font-weight:600;">Timeline visuelle</div><div style="font-size:11px;color:var(--text-light);">Format timeline jour ou période</div></div></div>
+      <div class="fg" id="pdfJGrp" style="margin-top:10px;"><label class="fl">Joueur</label><select class="fs" id="pdfJ"></select></div>
+      <div class="frow" style="margin-top:6px;">
+        <div class="fg"><label class="fl">Du</label><input type="date" class="fi" id="pdfDe"></div>
+        <div class="fg"><label class="fl">Au</label><input type="date" class="fi" id="pdfAu"></div>
+      </div>
+      <button class="btn-p" onclick="genPDF()">📄 Générer PDF</button>
+    </div>
+  </div>
+</div>
+
+<script>// === Polyfill pour Safari iOS < 14 ===
 function _g(id){return document.getElementById(id);}
 function _gc(id){var e=document.getElementById(id);return e?e.classList:null;}
 function _gs(id){var e=document.getElementById(id);return e?e.style:{};}
@@ -813,14 +857,15 @@ const CC=['#1E6FA5','#E84040','#27AE60','#8E44AD','#E67E22','#2980B9','#16A085',
 const ABS={Absent:{ic:'❌',lb:'Absent',cl:'nj'},Justifié:{ic:'✔️',lb:'Justifiée',cl:'j'},Médical:{ic:'🏥',lb:'Médical',cl:'m'},Compétition:{ic:'🏆',lb:'Compétition',cl:'c'}};
 const PX=2.4,TLmin=7*60,TLmax=21*60;
 
+// ===== GOOGLE SHEETS CONFIG =====
+// Lecture ET écriture via Apps Script uniquement
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzS_F-JaOVEdgBURZIQgyVWaCQO7G_L9ipYNPNH0wiIdudkh_pgq0RpubpXkqlOcAEP8g/exec';
+
 // ===== JSONBIN CONFIG =====
 var JSONBIN_ID='6a2a9d35f5f4af5e29de734d';
 var JSONBIN_KEY='$2a$10$sAyDwmurbLG6Wucy0tnKzO0QXwzQX2eMNirBiFuOK2tYxML6EEFO2';
 var JSONBIN_URL='https://api.jsonbin.io/v3/b/'+JSONBIN_ID;
-
-// ===== GOOGLE SHEETS CONFIG =====
-// Lecture ET écriture via Apps Script uniquement
-const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzS_F-JaOVEdgBURZIQgyVWaCQO7G_L9ipYNPNH0wiIdudkh_pgq0RpubpXkqlOcAEP8g/exec';
+var currentCoach=null;
 
 // ===== STATE =====
 let cfg={},em=false,ctab='planning',cview='jour';
@@ -832,7 +877,7 @@ let fCoach='',fCat='';
 let copiedSes=null,copiedDay=null;
 let pdfType='i';
 let ctxId=null;
-let syncTimer=null,syncCountdown=10;
+let syncTimer=null,syncCountdown=120;
 // Pinch
 let pinchDist0=0,pinchScale0=1,tlScale=1;
 let lpTimer=null;
@@ -858,121 +903,87 @@ const showToast=(m,t='')=>{const el=document.getElementById('toast');el.textCont
 const showConflict=()=>{const b=document.getElementById('cflct');b.classList.add('on');setTimeout(()=>b.classList.remove('on'),2500);};
 
 // ===== INIT =====
-// Démarrage FTT AGENDA
-function _launch(){
+window.onload=function(){
   cfg={demo:true};
-  // Logo
+  // Initialiser le logo
   try{
     var imgs=document.querySelectorAll('img[alt="FTT"]');
     for(var i=0;i<imgs.length;i++){imgs[i].src=LOGO;}
   }catch(e){}
-  // Masquer splash — forcer display none
-  try{
-    var sp=document.getElementById('splash');
-    if(sp){
-      sp.style.cssText='display:none!important;opacity:0;visibility:hidden;';
-      sp.className='hidden';
+  // Démarrer après animation splash
+  setTimeout(function(){
+    try{document.getElementById('splash').classList.add('hidden');}catch(e){}
+    try{startApp();}catch(e){
+      try{
+        document.getElementById('mainApp').style.display='block';
+        loadDemo();
+        renderAll();
+        setStatus('ok','Prêt');
+      }catch(e2){}
     }
-  }catch(e){}
-  // Afficher app
-  try{
-    var app=document.getElementById('mainApp');
-    if(app)app.style.cssText='display:block!important;';
-  }catch(e){}
-  // Démarrer
-  try{startApp();}catch(err){
-    try{loadDemo();}catch(e){}
-    try{renderAll();}catch(e){}
-    try{setStatus('ok','Prêt');}catch(e){}
-  }
-}
-// Lancer immédiatement sans attendre window.onload
-setTimeout(_launch, 500);
+  },1200);
+};
 function saveConfig(){const id=document.getElementById('setupId').value.trim(),key=document.getElementById('setupKey').value.trim();if(!id||!key){showToast('Remplissez tous les champs','err');return;}cfg={sheetId:id,apiKey:key};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
 function startDemo(){cfg={demo:true};localStorage.setItem('fttCfg',JSON.stringify(cfg));document.getElementById('setupScreen').style.display='none';startApp();}
 function startApp(){
   try{
-    var app=document.getElementById('mainApp');
-    if(app)app.style.display='block';
-    var spl=document.getElementById('splash');
-    if(spl)spl.classList.add('hidden');
-    initDates();initPinch();
+    document.getElementById('mainApp').style.display='block';
+    initDates();
+    initPinch();
     document.addEventListener('click',function(e){
       if(ctxId&&document.getElementById('ctxMenu')&&!document.getElementById('ctxMenu').contains(e.target))hideCtx();
     });
-    // Charger local d'abord
+    // Charger données
     var saved=false;
     try{saved=loadFromLocal();}catch(e){}
     if(!saved){loadDemo();}
+    // Render
     try{renderAll();}catch(e){}
     try{initStats();}catch(e){}
     try{initAutoSync();}catch(e){}
-    // Charger JSONBin en arrière-plan
-    setStatus('loading','Chargement...');
-    loadFromJsonBin().then(function(){
-      try{saveToLocal();}catch(e){}
-      try{renderAll();}catch(e){}
-      try{showLoginIfNeeded();}catch(e){}
-      setStatus('ok','Synchronisé — '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
-    }).catch(function(err){
-      try{showLoginIfNeeded();}catch(e){}
-      setStatus('ok','Prêt — mode local');
-    });
+    setStatus('ok','Prêt');
   }catch(err){
+    // Fallback ultime
     try{loadDemo();renderAll();}catch(e){}
     setStatus('ok','Prêt');
   }
 }
+
+// ===== AUTO SYNC =====
 function initAutoSync(){
-  syncCountdown=30;
-  if(syncTimer)clearInterval(syncTimer);
-  syncTimer=setInterval(function(){
-    try{
-      syncCountdown--;
-      var el=document.getElementById('syncCountdown');
-      if(el)el.textContent=syncCountdown>0?'('+syncCountdown+'s)':'';
-      if(syncCountdown<=0){
-        syncCountdown=30;
-        // Lecture seule — détecter si un collègue a modifié
-        var tsAvant=D.updatedAt||0;
-        loadFromJsonBin().then(function(){
-          var tsApres=D.updatedAt||0;
-          if(tsApres>tsAvant){
-            // Un collègue a modifié — notifier
-            showToast('📲 Planning mis à jour par un collègue','ok');
-            try{saveToLocal();}catch(e){}
-            try{renderAll();}catch(e){}
-          }
-        }).catch(function(){});
-      }
-    }catch(e){}
-  },1000);
+  try{
+    syncCountdown=120;
+    if(syncTimer)clearInterval(syncTimer);
+    syncTimer=setInterval(function(){
+      try{
+        syncCountdown--;
+        const el=document.getElementById('syncCountdown');
+        if(el)el.textContent=syncCountdown>0?'(sync dans '+syncCountdown+'s)':'';
+        if(syncCountdown<=0){syncNow();syncCountdown=120;}
+      }catch(e){}
+    },1000);
+  }catch(e){}
 }
 async function syncNow(){
   try{
-    var btn=document.getElementById('syncBtn');
+    const btn=document.getElementById('syncBtn');
     if(btn)btn.classList.add('spin');
-    var ring=document.getElementById('syncRing');
+    const ring=document.getElementById('syncRing');
     if(ring)ring.classList.add('on');
     setStatus('loading','Sync...');
-    // Sauvegarder vers JSONBin
-    await saveToJsonBin();
-    // Recharger depuis JSONBin
-    await loadFromJsonBin();
-    try{saveToLocal();}catch(e){}
-    try{renderAll();}catch(e){}
-    setStatus('ok','Synchronisé — '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
-    showToast('Synchronisé ✓','ok');
-  }catch(e){
-    setStatus('ok','Mode local — '+e.message);
-    showToast('Sync échouée','err');
-  }
-  try{
-    var btn=document.getElementById('syncBtn');if(btn)btn.classList.remove('spin');
-    var ring=document.getElementById('syncRing');if(ring)ring.classList.remove('on');
+    try{
+      await saveToSheets();
+      setStatus('ok','Synchronisé — '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
+    }catch(err){
+      setStatus('ok','Local — pas de connexion');
+    }
+    if(btn)btn.classList.remove('spin');
+    if(ring)ring.classList.remove('on');
   }catch(e){}
-  syncCountdown=10;
+  syncCD=120;
 }
+
+// ===== DEMO DATA =====
 function loadDemo(){
   const t=fd(new Date());
   D.courts=['Court 1','Court 2','Court 3','Court 4','Court Couvert'];
@@ -1051,7 +1062,6 @@ function setEM(v){
 
 // ===== TABS =====
 function showTab(n,btn){if(n==='stats')setTimeout(initStats,100);
-  if(n==='historique')setTimeout(renderHistorique,100);
   ctab=n;
   document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active'));
   document.querySelectorAll('.nav-b').forEach(el=>el.classList.remove('active'));
@@ -1347,21 +1357,9 @@ function renderTL(){
     </div>`;
   }).join('');
 
-  // Barre mode édition fixe
-  var editBar='<div id="tlEditBar" style="position:sticky;bottom:0;left:0;background:white;right:0;border-top:2px solid '+(em?'var(--yellow)':'var(--gray-mid)')+';padding:8px 12px;display:flex;align-items:center;gap:8px;z-index:100;box-shadow:0 -4px 12px rgba(0,0,0,0.08);">'
-    +(em
-      ?'<button onclick="setEM(false)" style="flex:1;background:var(--green);border:none;color:white;padding:9px;border-radius:var(--rs);font-size:13px;font-family:Barlow Condensed,sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">✅ TERMINER</button>'
-       +'<button id="saveBtn" onclick="saveNow()" style="background:var(--yellow);border:none;color:var(--text);padding:9px 14px;border-radius:var(--rs);font-size:13px;font-family:Barlow Condensed,sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">💾 SAVE</button>'
-      :'<span style="font-size:12px;color:var(--text-light);font-family:Barlow Semi Condensed,sans-serif;flex:1;">👤 '+(currentCoach||'Visiteur')+'</span>'
-       +'<button onclick="setEM(true)" style="background:linear-gradient(135deg,#0D47A1,#1565C0);border:none;color:white;padding:9px 16px;border-radius:var(--rs);font-size:13px;font-family:Barlow Condensed,sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;letter-spacing:0.5px;">✏️ MODIFIER</button>'
-       +'<button onclick="logoutCoach()" style="background:var(--gray-light);border:1px solid var(--gray-mid);color:var(--text-mid);padding:9px 10px;border-radius:var(--rs);font-size:12px;cursor:pointer;touch-action:manipulation;" title="Changer de coach">🔄</button>'
-    )+'</div>';
-
-  inner.innerHTML=pdHtml
-    +'<div style="position:relative;height:'+(totalH+40)+'px;width:'+tW+'px;">'
-    +hHtml+lHtml+(typeof pHtml!=='undefined'?pHtml:'')+bHtml
-    +'</div>'
-    +editBar;
+  inner.innerHTML=pdHtml+`<div style="position:relative;height:${totalH+40}px;width:${tW}px;">
+    ${hHtml}${lHtml}${pHtml}${bHtml}
+  </div>`;
 }
 function rmChip(sid,name,e){e.stopPropagation();const s=D.planning.find(p=>p.id===sid);if(s){s.joueurs=s.joueurs.filter(j=>j!==name);renderTL();showToast(pini(name)+' retiré','ok');}}
 function delSes(id){if(!confirm('Supprimer cette séance ?'))return;D.planning=D.planning.filter(s=>s.id!==id);D.absences=D.absences.filter(a=>a.seanceId!==id);renderTL();showToast('Séance supprimée','ok');}
@@ -1485,7 +1483,6 @@ function saveAbs(){
   const sv=document.getElementById('abSea').value;
   D.absences.push({id:Date.now(),date:document.getElementById('abDate').value,joueur:document.getElementById('abPlayer').value,seanceId:sv?parseInt(sv):null,stat:document.getElementById('abStat').value,notes:document.getElementById('abNotes').value});
   renderAbs();renderHisto();renderTL();closeMo('absMo');showToast('Absence enregistrée ✓','ok');
-  addHistorique('Absence','Absence enregistrée');
   autoSave();
 }
 function delAbs(id){D.absences=D.absences.filter(a=>a.id!==id);renderAbs();renderHisto();renderTL();showToast('Supprimée','ok');}
@@ -1580,7 +1577,6 @@ function saveSes(){
   const ses={id:eSession||Date.now(),date:fd(cDate),hd:start,dur:sDur,court,surf:sType==='Physique'?'':document.getElementById('sSurf').value,type:actualType,coachs:[...sCoaches],joueurs:[...sPlayers],notes:document.getElementById('sNotes').value};
   if(eSession){const idx=D.planning.findIndex(s=>s.id===eSession);if(idx!==-1)D.planning[idx]=ses;}else D.planning.push(ses);
   renderTL();closeMo('sessionMo');showToast('Séance enregistrée ✓','ok');
-  addHistorique('Séance',eSession?'Séance modifiée':'Nouvelle séance créée');
   autoSave();
 }
 
@@ -1629,7 +1625,6 @@ function saveCoach(){
   const coach={id:eCoach!==null?D.coachs[eCoach].id:Date.now(),nom:n,mission:document.getElementById('cMission').value,notes:document.getElementById('cNotes').value};
   if(eCoach!==null)D.coachs[eCoach]=coach;else D.coachs.push(coach);
   renderCoachs();closeMo('coachMo');showToast('Coach enregistré ✓','ok');
-  addHistorique('Coach',eCoach!==null?'Coach modifié':'Nouveau coach ajouté');
   autoSave();
 }
 function delCoach(idx){
@@ -3074,10 +3069,8 @@ async function saveToSheets(){
 
 // Auto-save après chaque modification importante
 function autoSave(){
-  // Marquer comme modifié localement
   D.updatedAt=Date.now();
   try{saveToLocal();}catch(e){}
-  // Envoyer vers JSONBin — uniquement après confirmation du coach
   saveToJsonBin().then(function(){
     try{setStatus('ok','Sauvegardé ✓ — '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));}catch(e){}
   }).catch(function(){
@@ -3158,148 +3151,67 @@ function loadFromLocal(){
   }catch(e){return false;}
 }
 
-// ===== JSONBIN SYNC =====
+// ===== JSONBIN =====
 async function saveToJsonBin(){
-  var data={
-    planning:D.planning,
-    joueurs:D.joueurs,
-    coachs:D.coachs,
-    absences:D.absences,
-    competitions:D.competitions,
-    notes:D.notes||{},
-    historique:D.historique||[],
-    updatedAt:D.updatedAt||Date.now()
-  };
-  var res=await fetch(JSONBIN_URL,{
-    method:'PUT',
-    headers:{
-      'Content-Type':'application/json',
-      'X-Master-Key':JSONBIN_KEY
-    },
-    body:JSON.stringify(data)
-  });
-  if(!res.ok)throw new Error('JSONBin write failed: '+res.status);
+  var data={planning:D.planning,joueurs:D.joueurs,coachs:D.coachs,absences:D.absences,
+    competitions:D.competitions,notes:D.notes||{},historique:D.historique||[],updatedAt:D.updatedAt||Date.now()};
+  var res=await fetch(JSONBIN_URL,{method:'PUT',
+    headers:{'Content-Type':'application/json','X-Master-Key':JSONBIN_KEY},
+    body:JSON.stringify(data)});
+  if(!res.ok)throw new Error('JSONBin write: '+res.status);
   return res.json();
 }
 
 async function loadFromJsonBin(){
-  var res=await fetch(JSONBIN_URL+'/latest',{
-    headers:{'X-Master-Key':JSONBIN_KEY}
-  });
-  if(!res.ok)throw new Error('JSONBin read failed: '+res.status);
+  var res=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}});
+  if(!res.ok)throw new Error('JSONBin read: '+res.status);
   var json=await res.json();
   var data=json.record;
   if(!data)return false;
-  // Garder la version la plus récente (timestamp)
   var remoteTs=data.updatedAt||0;
   var localTs=D.updatedAt||0;
   if(remoteTs>=localTs){
-    // JSONBin est plus récent ou égal — charger
-    if(data.planning)D.planning=data.planning;
-    if(data.joueurs)D.joueurs=data.joueurs;
-    if(data.coachs)D.coachs=data.coachs;
+    if(data.planning&&data.planning.length)D.planning=data.planning;
+    if(data.joueurs&&data.joueurs.length)D.joueurs=data.joueurs;
+    if(data.coachs&&data.coachs.length)D.coachs=data.coachs;
     if(data.absences)D.absences=data.absences;
     if(data.competitions)D.competitions=data.competitions;
     if(data.notes)D.notes=data.notes;
+    if(data.historique)D.historique=data.historique;
     D.updatedAt=remoteTs;
   }
-  // Si local est plus récent, ne rien écraser — autoSave enverra au prochain cycle
   return true;
 }
 
-// ===== HISTORIQUE =====
-function addHistorique(action,detail){
-  if(!D.historique)D.historique=[];
-  D.historique.unshift({
-    ts:Date.now(),
-    date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}),
-    heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
-    action:action,
-    detail:detail||''
-  });
-  // Garder les 50 dernières entrées
-  if(D.historique.length>50)D.historique=D.historique.slice(0,50);
+// ===== COACH LOGIN =====
+function showLoginIfNeeded(){
+  var savedCoach=null;
+  try{savedCoach=localStorage.getItem('fttCoach');}catch(e){}
+  if(savedCoach!==null){currentCoach=savedCoach||null;return;}
+  var ls=document.getElementById('loginScreen');
+  if(ls){renderLoginScreen();ls.style.display='flex';}
 }
 
-function renderHistorique(){
-  var el=document.getElementById('histoCont');
-  if(!el)return;
-  if(!D.historique||!D.historique.length){
-    el.innerHTML='<div style="text-align:center;padding:32px;color:var(--text-light);">'
-      +'<div style="font-size:36px;margin-bottom:8px;">📋</div>'
-      +'<div>Aucune modification enregistrée</div></div>';
-    return;
-  }
-  var html='';
-  D.historique.forEach(function(h){
-    var icon=h.action==='Séance'?'📅':h.action==='Coach'?'👤':h.action==='Joueur'?'🎾':h.action==='Absence'?'⚠️':'📝';
-    html+='<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-mid);">'
-      +'<div style="font-size:22px;">'+icon+'</div>'
-      +'<div style="flex:1;">'
-      +'<div style="font-size:13px;font-weight:700;color:var(--text);">'+h.action+'</div>'
-      +'<div style="font-size:12px;color:var(--text-mid);">'+h.detail+'</div>'
-      +'<div style="font-size:11px;color:var(--text-light);margin-top:2px;">'+h.date+' à '+h.heure+'</div>'
-      +'</div></div>';
-  });
-  el.innerHTML=html;
-}
-
-// ===== LOGIN COACH =====
 function renderLoginScreen(){
   var list=document.getElementById('coachList');
   if(!list)return;
-  // Logo
   try{document.getElementById('loginLogo').src=LOGO;}catch(e){}
-  
   if(!D.coachs||!D.coachs.length){
-    list.innerHTML='<div style="text-align:center;color:#999;font-size:13px;padding:12px;">Aucun coach configuré</div>';
+    list.innerHTML='<div style="text-align:center;color:#999;padding:12px;">Aucun coach configuré.<br>Continuez en mode consultation.</div>';
     return;
   }
   list.innerHTML=D.coachs.map(function(c){
-    return '<button onclick="loginCoach('+JSON.stringify(c.nom)+')" style="width:100%;background:linear-gradient(135deg,#E3F2FD,#fff);border:2px solid #1565C0;color:#0D47A1;padding:12px 16px;border-radius:12px;font-size:15px;font-family:Barlow Condensed,sans-serif;font-weight:800;cursor:pointer;text-align:left;display:flex;align-items:center;gap:10px;touch-action:manipulation;">'
-      +'<span style="font-size:24px;">👤</span>'
-      +'<div><div>'+c.nom+'</div><div style="font-size:11px;font-weight:400;color:#1565C0;opacity:0.7;">'+( c.mission||'Coach')+'</div></div>'
-      +'</button>';
+    return '<button onclick="loginCoach('+JSON.stringify(c.nom)+')" style="width:100%;background:#E3F2FD;border:2px solid #1565C0;color:#0D47A1;padding:12px;border-radius:12px;font-size:15px;font-family:Barlow Condensed,sans-serif;font-weight:800;cursor:pointer;text-align:left;margin-bottom:4px;touch-action:manipulation;">👤 '+c.nom+'<span style="font-size:11px;font-weight:400;color:#666;display:block;">'+(c.mission||'Coach')+'</span></button>';
   }).join('');
-}
-
-
-function showLoginIfNeeded(){
-  // Vérifier si coach déjà mémorisé
-  var savedCoach=null;
-  try{savedCoach=localStorage.getItem('fttCoach');}catch(e){}
-  if(savedCoach!==null){
-    // Coach mémorisé — connexion directe
-    currentCoach=savedCoach||null;
-    return;
-  }
-  // Pas de coach mémorisé — afficher l'écran
-  var ls=document.getElementById('loginScreen');
-  if(ls){
-    renderLoginScreen();
-    ls.style.display='flex';
-  }
 }
 
 function loginCoach(nom){
   currentCoach=nom;
-  // Stocker le choix
   try{localStorage.setItem('fttCoach',nom||'');}catch(e){}
-  // Masquer l'écran login
   var ls=document.getElementById('loginScreen');
   if(ls)ls.style.display='none';
-  // Mode consultation si pas de coach sélectionné
-  if(!nom){
-    em=false;
-  }
-  // Mettre à jour le header
-  updateCoachHeader();
-  showToast('Bienvenue '+(nom||'!'),'ok');
-}
-
-function updateCoachHeader(){
-  // Le nom du coach apparaît dans la barre édition de la timeline
-  try{renderTL();}catch(e){}
+  showToast('Bienvenue '+(nom||''),'ok');
+  try{renderAll();}catch(e){}
 }
 
 function logoutCoach(){
@@ -3308,44 +3220,36 @@ function logoutCoach(){
   var ls=document.getElementById('loginScreen');
   if(ls){ls.style.display='flex';renderLoginScreen();}
   em=false;
-  renderAll();
+  try{renderAll();}catch(e){}
 }
 
 // ===== HISTORIQUE =====
 function addHistorique(action,detail){
   if(!D.historique)D.historique=[];
-  D.historique.unshift({
-    ts:Date.now(),
-    date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'}),
+  D.historique.unshift({ts:Date.now(),
+    date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),
     heure:new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}),
-    action:action,
-    detail:detail||''
-  });
-  // Garder les 50 dernières entrées
+    action:action,detail:detail||''});
   if(D.historique.length>50)D.historique=D.historique.slice(0,50);
 }
 
-function renderHistorique(){
-  var el=document.getElementById('histoCont');
-  if(!el)return;
-  if(!D.historique||!D.historique.length){
-    el.innerHTML='<div style="text-align:center;padding:32px;color:var(--text-light);">'
-      +'<div style="font-size:36px;margin-bottom:8px;">📋</div>'
-      +'<div>Aucune modification enregistrée</div></div>';
-    return;
+function toggleEditMode(){
+  setEM(!em);
+  var btn=document.getElementById('editModeBtn');
+  var bar=document.getElementById('editModeBar');
+  var nameEl=document.getElementById('coachNameBar');
+  if(nameEl)nameEl.textContent='👤 '+(currentCoach||'Visiteur');
+  if(btn){
+    if(em){
+      btn.textContent='✅ TERMINER';
+      btn.style.background='var(--green)';
+      if(bar)bar.style.borderBottomColor='var(--yellow)';
+    }else{
+      btn.textContent='✏️ MODIFIER';
+      btn.style.background='linear-gradient(135deg,#0D47A1,#1565C0)';
+      if(bar)bar.style.borderBottomColor='var(--gray-mid)';
+    }
   }
-  var html='';
-  D.historique.forEach(function(h){
-    var icon=h.action==='Séance'?'📅':h.action==='Coach'?'👤':h.action==='Joueur'?'🎾':h.action==='Absence'?'⚠️':'📝';
-    html+='<div style="display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-mid);">'
-      +'<div style="font-size:22px;">'+icon+'</div>'
-      +'<div style="flex:1;">'
-      +'<div style="font-size:13px;font-weight:700;color:var(--text);">'+h.action+'</div>'
-      +'<div style="font-size:12px;color:var(--text-mid);">'+h.detail+'</div>'
-      +'<div style="font-size:11px;color:var(--text-light);margin-top:2px;">'+h.date+' à '+h.heure+'</div>'
-      +'</div></div>';
-  });
-  el.innerHTML=html;
 }
 </script>
 
@@ -3355,23 +3259,3 @@ function renderHistorique(){
 <span id="fCats" style="display:none;"></span>
 </body>
 </html>
-
-<!-- OVERLAYS -->
-<div class="toast" id="toast"></div>
-<div class="conflict-banner" id="cflct">⚠ Conflit horaire — joueur déjà planifié sur ce créneau</div>
-<div class="sync-ring" id="syncRing"></div>
-<div class="ctx-menu" id="ctxMenu">
-  <div class="ctx-item" id="ctxEdit" onclick="ctxDo('edit')">✏ Modifier la séance</div>
-  <div class="ctx-item" id="ctxHeure" onclick="ctxDo('heure')">🕐 Modifier l'horaire</div>
-  <div class="ctx-item" id="ctxCopyDay" onclick="ctxDo('copyDay')">📋 Copier vers un autre jour</div>
-  <div class="ctx-item" id="ctxAbsence" onclick="ctxDo('absence')">⚠ Saisir une absence</div>
-  <div class="ctx-item" id="ctxPhysAvant" onclick="ctxDo('physAvant')">💪 Ajouter Physique 1h avant</div>
-  <div class="ctx-item" id="ctxPhysApres" onclick="ctxDo('physApres')">💪 Ajouter Physique 1h après</div>
-  <div class="ctx-item" id="ctxNote" onclick="ctxDo('note')">⭐ Notes d'engagement</div>
-  <div class="ctx-sep"></div>
-  <div class="ctx-item danger" id="ctxDelete" onclick="ctxDo('delete')">✕ Supprimer</div>
-</div>
-
-<!-- SPLASH -->
-
-
