@@ -390,7 +390,7 @@ header{background:var(--blue);padding:0 14px;display:flex;align-items:center;hei
       <button class="mode-btn" id="modeBtn" onclick="toggleMode()">
         <span id="lockIc">🔒</span><span id="modeLbl">CONSULTATION</span>
       </button>
-      <button class="sync-btn" id="syncBtn" onclick="syncNow()" title="Synchroniser">⟳</button>
+      <button class="sync-btn" id="syncBtn" onclick="forceSync()" title="Forcer la mise à jour">⟳</button>
       <button onclick="saveNow()" style="background:var(--yellow);border:none;color:var(--text);padding:5px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;letter-spacing:1px;" id="saveBtn">💾 SAVE</button>
       <button id="adminBtn" onclick="openAdmin()" style="display:none;background:#FFB300;border:none;color:#1A2535;padding:5px 10px;border-radius:6px;font-size:11px;font-family:'Barlow Condensed',sans-serif;font-weight:800;cursor:pointer;touch-action:manipulation;">👑 ADMIN</button>
     </div>
@@ -1118,6 +1118,7 @@ function hasConflict(name,hd,dur,excl=null){
 var ctxVisible=false;
 function showCtx(e,id){
   if(currentRole==='invite')return;
+  if(isDayLocked()){showToast('Journée passée — verrouillée','err');return;}
   e.preventDefault();e.stopPropagation();
   ctxId=id;ctxVisible=true;
   var m=document.getElementById('ctxMenu');
@@ -1162,6 +1163,7 @@ function ctxDo(a){var id=ctxId;hideCtx();if(!id)return;
 }
 function openHeureMo(id){
   if(currentRole==='invite')return;
+  if(isDayLocked()){showToast('Journée passée — modification verrouillée','err');return;}
   heureSessionId=id; // stocké séparément, indépendant de ctxId
   var s=D.planning.find(p=>p.id===id);if(!s)return;
   var coachsStr=s.coachs&&s.coachs.length?s.coachs.map(pini).join(', '):'Coach non assigné';
@@ -1233,6 +1235,23 @@ function cancelLP(){clearTimeout(lpTimer);}
 function renderTL(){
   var inner=document.getElementById('tlInner');
   var date=fd(cDate);
+  // Bandeau journée verrouillée
+  try{
+    var lockBar=document.getElementById('lockBanner');
+    if(isDayLocked()){
+      if(!lockBar){
+        lockBar=document.createElement('div');
+        lockBar.id='lockBanner';
+        lockBar.style.cssText='background:#FFF3E0;border:1px solid #FF9800;color:#E65100;padding:8px 12px;margin:8px 12px;border-radius:8px;font-size:12px;font-family:Barlow Semi Condensed,sans-serif;font-weight:600;text-align:center;';
+        lockBar.textContent='🔒 Journée passée — consultation uniquement';
+        var tlOuter=document.getElementById('tlOuter');
+        if(tlOuter&&tlOuter.parentNode)tlOuter.parentNode.insertBefore(lockBar,tlOuter);
+      }
+      lockBar.style.display='block';
+    }else if(lockBar){
+      lockBar.style.display='none';
+    }
+  }catch(e){}
   var sessions=D.planning.filter(s=>s.date===date);
   if(fCoach)sessions=sessions.filter(s=>s.coachs.includes(fCoach));
   if(fCat)sessions=sessions.filter(s=>s.joueurs.some(j=>{var jo=D.joueurs.find(p=>p.nom===j);return jo&&jo.cat===fCat;}));
@@ -1499,6 +1518,7 @@ function fillSlots(selId,def='09:00'){
 }
 function openSesModal(id){
   if(currentRole==='invite')return;
+  if(isDayLocked()){showToast('Journée passée — modification verrouillée','err');return;}
   eSession=id;sPlayers=[];sCoaches=[];sType='Tennis';sDur=60;
   document.getElementById('sesTitle').textContent=id?'Modifier Séance':'Nouvelle Séance';
   fillSlots('sStart','09:00');
@@ -3292,6 +3312,51 @@ async function syncNow(){
   try{var b=document.getElementById('syncBtn');if(b)b.classList.remove('spin');}catch(e){}
   try{var r=document.getElementById('syncRing');if(r)r.classList.remove('on');}catch(e){}
   syncCountdown=120;
+}
+
+// Vérifie si une journée est passée (verrouillée)
+function isDayLocked(dateObj){
+  if(currentRole==='admin')return false; // admin peut tout modifier
+  var d=dateObj||cDate;
+  var today=new Date();
+  today.setHours(0,0,0,0);
+  var checkDay=new Date(d);
+  checkDay.setHours(0,0,0,0);
+  return checkDay.getTime()<today.getTime();
+}
+
+// Forcer la synchronisation : récupérer la dernière version en ligne
+async function forceSync(){
+  if(!confirm('Forcer la mise à jour ?\n\nCela va récupérer la dernière version depuis le serveur. Vos modifications non enregistrées seront perdues.'))return;
+  setStatus('loading','Mise à jour forcée...');
+  showToast('Récupération en cours...','ok');
+  try{
+    var res=await fetch(JSONBIN_URL+'/latest',{headers:{'X-Master-Key':JSONBIN_KEY}});
+    if(!res.ok)throw new Error('Erreur '+res.status);
+    var data=(await res.json()).record;
+    if(data){
+      D.planning=data.planning||[];
+      D.joueurs=data.joueurs||[];
+      D.coachs=data.coachs||[];
+      D.absences=data.absences||[];
+      D.competitions=data.competitions||[];
+      D.notes=data.notes||{};
+      D.msg=data.msg||{};
+      D.historique=data.historique||[];
+      if(data.acces&&data.acces.coachs&&data.acces.coachs.length){
+        ACCES_COACHS=data.acces.coachs;
+        try{localStorage.setItem('fttAcces',JSON.stringify(ACCES_COACHS));}catch(e){}
+      }
+      D.updatedAt=data.updatedAt||Date.now();
+      try{saveToLocal();}catch(e){}
+      try{renderAll();}catch(e){}
+      setStatus('ok','Mise à jour ✓ '+new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));
+      showToast('Application à jour ✓','ok');
+    }
+  }catch(e){
+    setStatus('ok','Erreur réseau');
+    showToast('Erreur — vérifiez votre connexion','err');
+  }
 }
 </script>
 
